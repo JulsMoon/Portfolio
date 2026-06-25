@@ -1,0 +1,2715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Giulia Silvano - Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { overflow-x: hidden; scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: #fdfcff; color: #1a1a24; }
+
+.fixed { position: fixed; }
+.absolute { position: absolute; }
+.relative { position: relative; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+
+/* Background Base */
+#background-container {
+  position: fixed; inset: 0; z-index: -10;
+  background: #faf8fd; 
+}
+
+/* Canvas per la rete linfatica animata */
+#lymph-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+/* Particles */
+#particles-canvas {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 3;
+}
+
+/* Nav */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 2.5rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(168, 85, 247, 0.12);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+  transition: background 0.3s;
+}
+nav .logo { font-weight: 700; font-size: 1.3rem; color: #1a1a24; letter-spacing: -0.03em; }
+nav .logo span { color: #7c3aed; }
+nav .nav-links { display: flex; align-items: center; gap: 2rem; }
+nav .nav-links a {
+  font-size: 0.85rem; color: rgba(26, 26, 36, 0.8); text-decoration: none;
+  transition: color 0.3s; font-weight: 500; letter-spacing: 0.02em;
+  position: relative; padding-bottom: 2px;
+}
+nav .nav-links a::after {
+  content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1.5px;
+  background: #7c3aed; transition: width 0.3s;
+}
+nav .nav-links a:hover { color: #1a1a24; }
+nav .nav-links a:hover::after { width: 100%; }
+nav .social { display: flex; align-items: center; gap: 1rem; }
+nav .social a { color: rgba(26, 26, 36, 0.5); transition: all 0.3s; }
+nav .social a:hover { color: #7c3aed; transform: translateY(-2px); }
+nav .social svg { width: 1.25rem; height: 1.25rem; }
+
+/* Hero */
+#hero {
+  position: relative; min-height: 100vh; width: 100%; display: flex; flex-direction: column;
+}
+
+#hero .content {
+  position: relative; z-index: 10; flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 5.5rem 1.5rem 2rem; /* Aggiunto padding-top per ospitare la barra di navigazione fissa */
+  background: radial-gradient(80% 50% at center, rgba(253, 252, 255, 0.95) 0%, rgba(253, 252, 255, 0.6) 60%, rgba(253, 252, 255, 0) 100%);
+}
+
+/* Motto sotto la descrizione */
+.hero-motto {
+  font-size: 1rem;
+  font-style: italic;
+  color: #1a1a24; /* Colore scuro scambiato */
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+#hero h1 {
+  font-size: clamp(2rem, 5vw, 4rem); font-weight: 700; line-height: 1.15;
+  max-width: 55rem; margin-bottom: 1rem;
+}
+#hero h1 .gradient-text {
+  background: linear-gradient(135deg, #a855f7, #7c3aed, #4c1d95);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+#hero h1 .underlined {
+  position: relative; display: inline-block;
+}
+#hero h1 .underlined .line {
+  position: absolute; bottom: 0.15rem; left: 0; width: 100%; height: 8px;
+  background: linear-gradient(90deg, #a855f7, #7c3aed); border-radius: 2px; opacity: 0.5;
+}
+#hero h1 .underlined span { position: relative; }
+
+.hero-description {
+  font-size: 1.25rem;
+  color: #7c3aed; /* Colore viola scambiato */
+  font-weight: 500;
+  max-width: 38rem;
+  line-height: 1.6;
+  margin-bottom: 2rem; /* Spaziatura prima del bottone CTA */
+}
+
+/* Hero Mini Cards */
+.hero-cards-container {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+  justify-content: center;
+  width: 100%;
+  max-width: 80rem;
+  margin-bottom: 2.5rem;
+  z-index: 20;
+}
+.what-i-do-title {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  color: #1a1a24;
+  margin-top: 4rem; /* Spazio dopo il bottone CTA */
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.what-i-do-title span {
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-mini-card {
+  flex: 1;
+  min-width: 200px;
+  max-width: 260px;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.6), transparent 55%), 
+              linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(243, 240, 247, 0.5) 100%);
+  border: 1.5px solid rgba(168, 85, 247, 0.22);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 
+              inset 0 10px 20px rgba(255, 255, 255, 0.03), 
+              0 20px 40px rgba(168, 85, 247, 0.06), 
+              0 5px 15px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+.hero-mini-card h3 {
+  font-size: 1.15rem;
+  color: #1a1a24;
+  font-weight: 700;
+  margin-bottom: 0.15rem;
+}
+.hero-mini-card .mini-card-image-placeholder {
+  width: 100%;
+  height: 120px;
+  border-radius: 0.75rem;
+  background: rgba(168, 85, 247, 0.03);
+  border: 1.5px dashed rgba(168, 85, 247, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(26, 26, 36, 0.45);
+  font-size: 0.8rem;
+  font-weight: 500;
+  overflow: hidden;
+}
+.hero-mini-card img {
+  width: 100%;
+  height: 120px;
+  border-radius: 0.75rem;
+  object-fit: cover;
+  border: 1px solid rgba(168, 85, 247, 0.12);
+}
+
+/* 3D Floating Avatar Portrait */
+.hero-avatar-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  z-index: 25;
+}
+.hero-avatar-container {
+  width: 240px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: float-avatar 6s ease-in-out infinite;
+  z-index: 2;
+  position: relative;
+}
+.hero-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(124, 58, 237, 0.35));
+}
+.hero-avatar-shadow {
+  width: 150px;
+  height: 12px;
+  background: rgba(168, 85, 247, 0.18);
+  border-radius: 50%;
+  filter: blur(8px);
+  margin-top: 12px;
+  animation: float-shadow 6s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes float-avatar {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes float-shadow {
+  0% { transform: scale(1); opacity: 1; filter: blur(8px); }
+  50% { transform: scale(0.78); opacity: 0.45; filter: blur(10px); }
+  100% { transform: scale(1); opacity: 1; filter: blur(8px); }
+}
+
+#hero .ctas {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; justify-content: center;
+}
+
+#hero .cta-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: linear-gradient(135deg, #a855f7, #7c3aed); color: #fff; font-weight: 600;
+  border-radius: 0.75rem; padding: 0.875rem 2rem; font-size: 0.875rem;
+  text-decoration: none; transition: all 0.3s; box-shadow: 0 0 20px rgba(168,85,247,0.2);
+}
+#hero .cta-btn:hover {
+  transform: translateY(-2px); box-shadow: 0 8px 30px rgba(168,85,247,0.35);
+}
+#hero .cta-btn.secondary {
+  background: rgba(255, 255, 255, 0.4);
+  border: 1.5px solid rgba(168, 85, 247, 0.3);
+  color: #1a1a24;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+#hero .cta-btn.secondary:hover {
+  background: rgba(168, 85, 247, 0.08);
+  border-color: rgba(168, 85, 247, 0.5);
+  color: #7c3aed;
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.15);
+}
+
+#hero .bounce-arrow {
+  position: relative; z-index: 10; display: flex; justify-content: center;
+  padding-bottom: 2rem; margin-top: 3rem;
+}
+#hero .bounce-arrow a { color: rgba(168,85,247,0.5); text-decoration: none; transition: color 0.3s; }
+#hero .bounce-arrow a:hover { color: #a855f7; }
+#hero .bounce-arrow svg { width: 1.5rem; height: 1.5rem; animation: bounce 2s ease-in-out infinite; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* Slider Container */
+.slider-section {
+  position: relative; min-height: 100vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; padding: 6rem 0; z-index: 10;
+}
+.slider-title-wrapper {
+  max-width: 64rem; width: 100%; text-align: center; margin-bottom: 2rem;
+  padding: 0 2.5rem;
+}
+.what-i-do-section {
+  position: relative;
+  padding: 6rem 2.5rem 4rem;
+  max-width: 80rem;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.section-title {
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: #1a1a24; margin-bottom: 0.5rem;
+}
+.section-title span {
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.section-subtitle {
+  color: #1a1a24; font-size: 1rem;
+}
+
+/* Horizontal Scroll Container */
+.scroll-wrapper {
+  width: 100%; max-width: 100%; position: relative;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+.scroll-container {
+  display: flex; gap: 3rem; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 3rem calc(50% - 350px) 4rem; scrollbar-width: none; /* Hide default scrollbar Firefox */
+  scroll-behavior: smooth;
+  transform-style: preserve-3d;
+  position: relative;
+}
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Hide default scrollbar Webkit */
+}
+
+/* Scroll Card */
+.scroll-card {
+  flex: 0 0 700px; scroll-snap-align: center;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.6), transparent 55%), 
+              linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(243, 240, 247, 0.5) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 1.5rem; padding: 2.5rem; 
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 
+              inset 0 10px 20px rgba(255, 255, 255, 0.03), 
+              0 20px 45px rgba(124, 58, 237, 0.15), 
+              0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 460px; position: relative; overflow: hidden;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.scroll-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, #7c3aed, transparent); opacity: 0;
+  transition: opacity 0.4s;
+}
+.scroll-card:hover {
+  border-color: rgba(168, 85, 247, 0.5);
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.8), transparent 55%), 
+              linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(243, 240, 247, 0.65) 100%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 
+              inset 0 10px 20px rgba(255, 255, 255, 0.05), 
+              0 25px 55px rgba(124, 58, 237, 0.25), 
+              0 10px 30px rgba(0, 0, 0, 0.12);
+}
+.scroll-card:hover::before { opacity: 1; }
+
+.scroll-card h3 { font-size: 1.5rem; color: #1a1a24; margin-bottom: 1.25rem; font-weight: 700; }
+.scroll-card p { color: rgba(26,26,36,0.75); font-size: 0.95rem; line-height: 1.7; }
+
+/* Custom Badge */
+.card-badge {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: rgba(168, 85, 247, 0.08); border: 1px solid rgba(168, 85, 247, 0.15);
+  border-radius: 2rem; padding: 0.3rem 0.9rem; font-size: 0.7rem; color: #7c3aed;
+  text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; width: fit-content;
+  margin-bottom: 1.5rem;
+}
+
+/* Project Specific CSS */
+.project-tags { display: flex; gap: 0.5rem; margin: 1.25rem 0; flex-wrap: wrap; }
+.project-tags span {
+  background: rgba(168, 85, 247, 0.08); color: #7c3aed; padding: 0.3rem 0.8rem;
+  border-radius: 1rem; font-size: 0.7rem; font-weight: 500; border: 1px solid rgba(168, 85, 247, 0.15);
+}
+.project-card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  border: 1px solid rgba(168, 85, 247, 0.15);
+  box-shadow: 0 2px 8px rgba(168, 85, 247, 0.12);
+  display: block;
+}
+.project-detail-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  border: 1.5px solid rgba(168, 85, 247, 0.25);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+}
+.app-store-btn:hover {
+  background: #2d2d3a !important;
+}
+@media (max-width: 768px) {
+  .project-details-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+}
+
+/* Skills/Problem Solving CSS */
+.skills-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+.skill-item { display: flex; flex-direction: column; gap: 0.25rem; }
+.skill-info { display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(26, 26, 36, 0.8); }
+.skill-bar { height: 4px; background: rgba(0, 0, 0, 0.06); border-radius: 2px; overflow: hidden; }
+.skill-fill { height: 100%; background: linear-gradient(90deg, #a855f7, #7c3aed); width: 0; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); }
+
+/* Skills Categories & Tags Styles */
+.skills-category {
+  margin-bottom: 2rem;
+}
+.skills-category h4 {
+  font-size: 1.1rem;
+  color: #1a1a24;
+  font-weight: 700;
+  margin-bottom: 0.85rem;
+  border-bottom: 1.5px solid rgba(168, 85, 247, 0.15);
+  padding-bottom: 0.35rem;
+  text-align: left;
+}
+.skills-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: flex-start;
+}
+.skill-tag {
+  background: rgba(168, 85, 247, 0.05);
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  color: #1a1a24;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+.skill-tag:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.4);
+  color: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.12);
+}
+
+/* Custom Scroll Progress Bar (Simulating lymph vessel) */
+.flow-progress-wrapper {
+  width: 100%; max-width: 30rem; height: 3px; background: rgba(0, 0, 0, 0.05);
+  border-radius: 2px; margin-top: 2rem; position: relative; overflow: hidden;
+  border: 1px solid rgba(168, 85, 247, 0.1);
+}
+.flow-progress-bar {
+  height: 100%; width: 25%; background: linear-gradient(90deg, transparent, #7c3aed, transparent);
+  position: absolute; left: 0; top: 0; border-radius: 2px;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+  transition: left 0.1s ease-out;
+}
+
+#content { position: relative; z-index: 2; }
+
+@media (max-width: 1200px) {
+  .hero-cards-container {
+    flex-wrap: wrap;
+  }
+  .hero-mini-card {
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  nav .nav-links { display: none; }
+  #hero .content { padding: 6rem 1.5rem 2rem; }
+  #hero h1 { font-size: 1.75rem; }
+  #hero .ctas { flex-direction: column; }
+  .hero-cards-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    max-width: 100%;
+  }
+  .hero-mini-card {
+    width: 100%;
+    max-width: 280px;
+  }
+  .slider-section { padding: 4rem 1.25rem; }
+  .scroll-card { flex: 0 0 85vw; padding: 2rem; min-height: 350px; }
+  .scroll-container {
+    padding: 3rem 7.5vw 4rem;
+  }
+}
+
+/* Interactive Cards */
+.scroll-card {
+  cursor: pointer;
+}
+.scroll-card > * {
+  transition: transform 0.15s ease;
+}
+.scroll-card:active > * {
+  transform: scale(0.97);
+}
+
+/* Full Screen Modals / Overlays */
+.overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  opacity: 0; pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem;
+}
+.overlay.active {
+  opacity: 1; pointer-events: auto;
+}
+.overlay-content {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(168, 85, 247, 0.15);
+  border-radius: 1.5rem;
+  padding: 3rem;
+  max-width: 44rem;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(168, 85, 247, 0.08);
+  transform: translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #1a1a24;
+}
+.overlay.active .overlay-content {
+  transform: translateY(0);
+}
+.overlay-content::-webkit-scrollbar {
+  width: 6px;
+}
+.overlay-content::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.3);
+  border-radius: 3px;
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute; top: 1.5rem; right: 1.5rem;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.08);
+  color: rgba(26, 26, 36, 0.5);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.3s;
+}
+.close-btn:hover {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.35);
+  color: #7c3aed;
+  transform: rotate(90deg);
+}
+
+/* Projects Deck Overlay specific layout */
+.projects-deck-list {
+  display: flex; flex-direction: column; gap: 1.5rem; margin-top: 1.5rem;
+}
+.deck-card {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(168, 85, 247, 0.15);
+  border-radius: 1.25rem;
+  padding: 2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+.deck-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, #a855f7, transparent); opacity: 0;
+  transition: opacity 0.3s;
+}
+.deck-card:hover {
+  border-color: rgba(168, 85, 247, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.04);
+}
+.deck-card:hover::before { opacity: 1; }
+.deck-card h4 { font-size: 1.25rem; color: #1a1a24; margin-bottom: 0.5rem; }
+.deck-card p.deck-click-hint { font-size: 0.75rem; color: #7c3aed; margin-top: 1rem; font-weight: 500; }
+
+.overlay-content h3 {
+  font-size: 2rem; font-weight: 700; color: #1a1a24; margin-bottom: 1.5rem;
+}
+.overlay-content h3 span {
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Sidebar styles (Barra Laterale) */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -380px; /* Hidden offscreen on the left */
+  width: 380px;
+  height: 100vh;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.08) 60%, rgba(243, 240, 247, 0.18) 100%);
+  border-right: 1.5px solid rgba(255, 255, 255, 0.45);
+  border-radius: 0 2rem 2rem 0; /* Smooth organic rounded corners on the sliding edge */
+  backdrop-filter: blur(35px) saturate(165%); /* Premium liquid glass blur and back-saturation */
+  -webkit-backdrop-filter: blur(35px) saturate(165%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 
+              inset -1px 0 0 rgba(255, 255, 255, 0.4), 
+              inset 0 10px 30px rgba(255, 255, 255, 0.25), 
+              20px 0 50px rgba(124, 58, 237, 0.08), 
+              10px 0 20px rgba(0, 0, 0, 0.03);
+  z-index: 1000;
+  transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 3rem 2rem;
+}
+.sidebar.active {
+  left: 0; /* Slide in */
+}
+
+/* Sidebar overlay backdrop */
+.sidebar-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sidebar-overlay-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Close button inside sidebar */
+.sidebar-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: rgba(26, 26, 36, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+.sidebar-close:hover {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.35);
+  color: #7c3aed;
+  transform: rotate(90deg);
+}
+
+/* Sidebar content styling */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.sidebar-photo-container {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(168, 85, 247, 0.25);
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.15);
+  margin: 0 auto;
+  background: rgba(168, 85, 247, 0.03);
+}
+.sidebar-profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.sidebar-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(26, 26, 36, 0.4);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.sidebar-info {
+  text-align: center;
+  color: #1a1a24;
+}
+.sidebar-info h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.sidebar-subtitle {
+  font-size: 0.9rem;
+  color: #7c3aed;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.sidebar-motto {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: rgba(26, 26, 36, 0.65);
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  text-align: center;
+}
+.sidebar-summary-placeholder {
+  text-align: left;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(26, 26, 36, 0.75);
+  background: rgba(168, 85, 247, 0.02);
+  border: 1px solid rgba(168, 85, 247, 0.08);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+/* Active Logo color and style */
+#logo-gs {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+#logo-gs.active {
+  color: #7c3aed !important;
+}
+#logo-gs:hover {
+  color: #7c3aed !important;
+}
+
+/* Responsive sidebar */
+@media (max-width: 480px) {
+  .sidebar {
+    width: 100%;
+    left: -100%;
+    border-radius: 0; /* No corners when taking up the full viewport */
+    border-right: none;
+  }
+  .sidebar.active {
+    left: 0;
+  }
+}
+
+/* Sezione Contatti */
+.contacts-section {
+  position: relative;
+  padding: 8rem 2.5rem;
+  max-width: 64rem;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 10;
+  text-align: center;
+}
+.contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  width: 100%;
+  margin-top: 3rem;
+}
+@media (max-width: 900px) {
+  .contacts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 500px) {
+  .contacts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.contact-card {
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.6), transparent 55%), 
+              linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(243, 240, 247, 0.5) 100%);
+  border: 1.5px solid rgba(168, 85, 247, 0.22);
+  border-radius: 1.5rem;
+  padding: 2rem 1.5rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 
+              inset 0 10px 20px rgba(255, 255, 255, 0.03), 
+              0 20px 40px rgba(168, 85, 247, 0.06), 
+              0 5px 15px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.contact-card:hover {
+  border-color: rgba(168, 85, 247, 0.5);
+  transform: translateY(-5px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8), 
+              0 30px 60px rgba(168, 85, 247, 0.18), 
+              0 0 40px rgba(168, 85, 247, 0.05);
+}
+.contact-icon-wrapper {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7c3aed;
+  transition: all 0.3s ease;
+}
+.contact-card:hover .contact-icon-wrapper {
+  background: #7c3aed;
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+}
+.contact-icon-wrapper svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.contact-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a24;
+}
+.contact-card p {
+  font-size: 0.85rem;
+  color: rgba(26, 26, 36, 0.65);
+  word-break: break-all;
+  text-align: center;
+}
+
+/* Contatti Sidebar */
+.sidebar-contacts {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(168, 85, 247, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.sidebar-contacts-title {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #7c3aed;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+.sidebar-contacts-grid {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+.sidebar-contact-item {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: rgba(168, 85, 247, 0.05);
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #7c3aed;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+.sidebar-contact-item:hover {
+  background: #7c3aed;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+.sidebar-contact-item svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+/* Frecce Carosello */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) translateZ(50px);
+  background: none;
+  border: none;
+  color: rgba(124, 58, 237, 0.5);
+  font-size: 3.5rem;
+  font-weight: 300; /* Rende il carattere sottile ed elegante */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 30;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+.slider-arrow:hover {
+  color: #7c3aed;
+  transform: translateY(-50%) scale(1.2) translateZ(60px);
+}
+.prev-arrow {
+  left: 5rem; /* Spostata verso l'interno per maggiore safe space */
+}
+.next-arrow {
+  right: 5rem; /* Spostata verso l'interno per maggiore safe space */
+}
+
+@media (max-width: 1200px) {
+  .prev-arrow {
+    left: 3.5rem;
+  }
+  .next-arrow {
+    right: 3.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider-arrow {
+    font-size: 2.2rem;
+  }
+  .prev-arrow {
+    left: 1.2rem; /* Spostata per maggiore safe space su dispositivi mobili */
+  }
+  .next-arrow {
+    right: 1.2rem; /* Spostata per maggiore safe space su dispositivi mobili */
+  }
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- Background con Rete Linfatica Procedurale -->
+<div id="background-container">
+  <canvas id="lymph-canvas"></canvas>
+</div>
+
+<!-- Particles & Impulses -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- Fixed Cards (removed) -->
+
+<!-- Navigation -->
+<nav>
+  <div style="display:flex;align-items:center;gap:2rem;">
+    <span class="logo" id="logo-gs">GS</span>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contacts">Contact</a>
+    </div>
+  </div>
+  <div class="social">
+    <a href="https://www.linkedin.com/in/giulia-silvano-561432254" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+    <a href="https://github.com/JulsMoon" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg></a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div id="content">
+  <section id="hero">
+    <div class="content">
+      <h1>
+        Hi, I'm <span class="gradient-text">GIULIA</span>
+      </h1>
+      <p class="hero-motto">"Curious by nature, committed by choice"</p>
+      
+      <!-- 3D Floating Avatar Portrait -->
+      <div class="hero-avatar-wrapper">
+        <div class="hero-avatar-container">
+          <img src="assets/avatar.png" alt="Giulia Silvano Low-Poly 3D Portrait" class="hero-avatar">
+        </div>
+        <div class="hero-avatar-shadow"></div>
+      </div>
+
+      <p class="hero-description">
+        Connecting Biomedical Engineering with immersive iOS Development.
+      </p>
+
+
+    </div>
+  </section>
+
+  <!-- What I Do Section -->
+  <section id="what-i-do" class="what-i-do-section">
+    <div class="slider-title-wrapper">
+      <h2 class="section-title">What I <span>do</span></h2>
+    </div>
+    
+    <div class="hero-cards-container">
+      <div class="hero-mini-card">
+        <h3>UI/UX Design</h3>
+        <img src="assets/uiux.png" alt="Octopus iOS App UI/UX Mockup">
+      </div>
+      <div class="hero-mini-card">
+        <h3>Game Design</h3>
+        <img src="assets/gamedesign.jpg" alt="Fantasy Glowing Portal Game Scene">
+      </div>
+      <div class="hero-mini-card">
+        <h3>Engineering</h3>
+        <img src="assets/engineering.png" alt="Biomedical Engineering Bypass Diagram">
+      </div>
+      <div class="hero-mini-card">
+        <h3>Presentations</h3>
+        <img src="assets/presentations.jpg" alt="Presentations Keynote Slide Deck Mockup">
+      </div>
+      <div class="hero-mini-card">
+        <h3>Project Manager</h3>
+        <img src="assets/projectmanager.jpg" alt="Project Management Sticky Notes Board">
+      </div>
+    </div>
+  </section>
+
+  <!-- Horizontal Slider Section -->
+  <section id="portfolio-slider" class="slider-section">
+    <div class="slider-title-wrapper">
+      <h2 class="section-title">My <span>Journey</span></h2>
+    </div>
+
+    <div class="scroll-wrapper">
+      <button class="slider-arrow prev-arrow" aria-label="Previous card">&lt;</button>
+      <div class="scroll-container" id="cards-container">
+        <!-- CARD 1: LA MIA STORIA (Bio Preview) -->
+        <div class="scroll-card" id="card-about" data-target="overlay-about">
+          <div>
+            <div class="card-badge">About Me</div>
+            <h3>My Story</h3>
+            <p>
+              Hi, I’m Giulia — a Biomedical Engineering student and iOS developer in training at the Apple Developer Academy. I combine engineering, accessibility, and human-centered design to create digital experiences that are clear, inclusive, and meaningful. My work connects app development, UI/UX design, visual assets, game design, and project management, supported by a technical background in programming and engineering tools, and an international mindset shaped by languages and communication.
+            </p>
+          </div>
+          <p style="color: #a855f7; font-size: 0.8rem; margin-top: 1.5rem; font-weight: 600; text-align: left;">Click to read the full story ↗</p>
+        </div>
+
+        <!-- CARD 2: SKILLS (Skills Preview) -->
+        <div class="scroll-card" id="card-skills" data-target="overlay-skills">
+          <div>
+            <div class="card-badge">Skills</div>
+            <h3>Skills</h3>
+            <p>
+              Technical capabilities in iOS development, biomedical engineering, and health-tech sensing.
+            </p>
+          </div>
+          <p style="color: #a855f7; font-size: 0.8rem; margin-top: 1.5rem; font-weight: 600; text-align: left;">Click to view skills ↗</p>
+        </div>
+
+
+        <!-- CARD 4: LANGUAGES (Languages Preview) -->
+        <div class="scroll-card" id="card-languages" data-target="overlay-languages">
+          <div>
+            <div class="card-badge">Languages</div>
+            <h3>Languages</h3>
+            <p>
+              Multilingual profile enabling seamless communication in international and cross-functional teams.
+            </p>
+          </div>
+          <p style="color: #a855f7; font-size: 0.8rem; margin-top: 1.5rem; font-weight: 600; text-align: left;">Click to view languages ↗</p>
+        </div>
+      </div>
+      <button class="slider-arrow next-arrow" aria-label="Next card">&gt;</button>
+    </div>
+
+    <!-- Custom Progress (Simulated Lymph Vessel) -->
+    <div class="flow-progress-wrapper">
+      <div class="flow-progress-bar" id="slider-progress"></div>
+    </div>
+  </section>
+
+  <!-- Projects Horizontal Slider Section -->
+  <section id="projects-slider" class="slider-section">
+    <div class="slider-title-wrapper">
+      <h2 class="section-title">My <span>Projects</span></h2>
+    </div>
+
+    <div class="scroll-wrapper">
+      <button class="slider-arrow prev-arrow projects-prev-arrow" aria-label="Previous card">&lt;</button>
+      <div class="scroll-container" id="projects-slider-container">
+        
+        <!-- PROJECT CARD 1 -->
+        <div class="scroll-card" id="card-proj1" data-target="overlay-project1">
+          <div>
+            <div class="card-badge">Project 1</div>
+            <img src="assets/iris_lens_icon.png" alt="Iris Lens App Icon" class="project-card-icon">
+            <h3>Iris Lens</h3>
+            <div class="project-tags">
+              <span>Project Manager</span>
+              <span>UI/UX Design</span>
+              <span>Icon Design</span>
+              <span>Accessibility</span>
+              <span>User Research</span>
+            </div>
+            <p>
+              A real-time accessibility camera tool that assists individuals with color blindness by processing live feeds, amplifying hard-to-distinguish hues, and desaturating backgrounds for superior visual contrast.
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <p style="color: #a855f7; font-size: 0.8rem; font-weight: 600; text-align: left; margin: 0;">Click to read details ↗</p>
+            <a href="https://apps.apple.com/it/app/iris-lens/id6756568837?l=en-GB" target="_blank" rel="noopener noreferrer" class="card-app-store-link" onclick="event.stopPropagation();" style="color: #1a1a24; font-size: 0.75rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; background: rgba(168, 85, 247, 0.08); padding: 0.35rem 0.75rem; border-radius: 0.5rem; border: 1px solid rgba(168, 85, 247, 0.2); transition: all 0.2s;">
+              <svg fill="currentColor" viewBox="0 0 24 24" width="12" height="12">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.22.67-2.94 1.51-.63.73-1.18 1.87-1.03 2.97 1.12.09 2.27-.56 2.98-1.42z"/>
+              </svg>
+              App Store ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- PROJECT CARD 2 -->
+        <div class="scroll-card" id="card-proj2" data-target="overlay-project2">
+          <div>
+            <div class="card-badge">Project 2</div>
+            <img src="assets/scenink_icon.png" alt="ScenInk App Icon" class="project-card-icon">
+            <h3>ScenInk</h3>
+            <div class="project-tags">
+              <span>Project Manager</span>
+              <span>UI/UX Design</span>
+              <span>Icon Design</span>
+              <span>User Research</span>
+            </div>
+            <p>
+              A premium 3D posing and sketching application crafted for artists. Spawn and adjust 3D characters, project scenes into the physical world with Augmented Reality, and trace over captures using PencilKit.
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <p style="color: #a855f7; font-size: 0.8rem; font-weight: 600; text-align: left; margin: 0;">Click to read details ↗</p>
+            <a href="https://apps.apple.com/us/app/scenink-draw-3d-scenes/id6760011718" target="_blank" rel="noopener noreferrer" class="card-app-store-link" onclick="event.stopPropagation();" style="color: #1a1a24; font-size: 0.75rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; background: rgba(168, 85, 247, 0.08); padding: 0.35rem 0.75rem; border-radius: 0.5rem; border: 1px solid rgba(168, 85, 247, 0.2); transition: all 0.2s;">
+              <svg fill="currentColor" viewBox="0 0 24 24" width="12" height="12">
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.22.67-2.94 1.51-.63.73-1.18 1.87-1.03 2.97 1.12.09 2.27-.56 2.98-1.42z"/>
+              </svg>
+              App Store ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- PROJECT CARD 3 -->
+        <div class="scroll-card" id="card-proj3" data-target="overlay-project3">
+          <div>
+            <div class="card-badge">Project 3</div>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <img src="assets/amazed_game_icon.png" alt="AmazeD Game Icon" class="project-card-icon" style="margin-bottom: 0;">
+              <img src="assets/amazed_controller_icon.png" alt="AmazeD Controller Icon" class="project-card-icon" style="margin-bottom: 0;">
+            </div>
+            <h3>AmazeD</h3>
+            <div class="project-tags">
+              <span>Project Manager</span>
+              <span>Game Design</span>
+              <span>UI/UX Design</span>
+              <span>3D Modeling</span>
+              <span>Ideation</span>
+            </div>
+            <p>
+              An action-packed local multiplayer 3D labyrinth race built on a cross-device setup. Compete with friends on a shared screen, using your iPhone's internal accelerometer to steer and maneuver.
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <p style="color: #a855f7; font-size: 0.8rem; font-weight: 600; text-align: left; margin: 0;">Click to read details ↗</p>
+            <div style="display: flex; gap: 0.35rem;">
+              <a href="https://apps.apple.com/it/app/amazed-wizards-adventure/id6772945844?l=en-GB" target="_blank" rel="noopener noreferrer" class="card-app-store-link" onclick="event.stopPropagation();" style="color: #1a1a24; font-size: 0.7rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.2rem; background: rgba(168, 85, 247, 0.08); padding: 0.35rem 0.6rem; border-radius: 0.5rem; border: 1px solid rgba(168, 85, 247, 0.2); transition: all 0.2s;" title="Game App">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="12" height="12">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.22.67-2.94 1.51-.63.73-1.18 1.87-1.03 2.97 1.12.09 2.27-.56 2.98-1.42z"/>
+                </svg>
+                Game ↗
+              </a>
+              <a href="https://apps.apple.com/it/app/amazed-controller/id6779685625" target="_blank" rel="noopener noreferrer" class="card-app-store-link" onclick="event.stopPropagation();" style="color: #1a1a24; font-size: 0.7rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.2rem; background: rgba(168, 85, 247, 0.08); padding: 0.35rem 0.6rem; border-radius: 0.5rem; border: 1px solid rgba(168, 85, 247, 0.2); transition: all 0.2s;" title="Controller App">
+                <svg fill="currentColor" viewBox="0 0 24 24" width="12" height="12">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.22.67-2.94 1.51-.63.73-1.18 1.87-1.03 2.97 1.12.09 2.27-.56 2.98-1.42z"/>
+                </svg>
+                Controller ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECT CARD 4 -->
+        <div class="scroll-card" id="card-proj4" data-target="overlay-project4">
+          <div>
+            <div class="card-badge">Project 4</div>
+            <img src="assets/octojam_icon.png" alt="OctoJam App Icon" class="project-card-icon">
+            <h3>OctoJam</h3>
+            <div class="project-tags">
+              <span>Project Manager</span>
+              <span>UI/UX Design</span>
+              <span>Icon Design</span>
+            </div>
+            <p>
+              A collaborative peer-to-peer iOS music app that synchronizes multiple iPhones into a unified sound system using Multipeer Connectivity, playing audio simultaneously without needing an internet connection.
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <p style="color: #a855f7; font-size: 0.8rem; font-weight: 600; text-align: left; margin: 0;">Click to read details ↗</p>
+            <a href="https://antoniobonetti.dev" target="_blank" rel="noopener noreferrer" class="card-app-store-link" onclick="event.stopPropagation();" style="color: #1a1a24; font-size: 0.75rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem; background: rgba(168, 85, 247, 0.08); padding: 0.35rem 0.75rem; border-radius: 0.5rem; border: 1px solid rgba(168, 85, 247, 0.2); transition: all 0.2s;" title="Project Website">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="12" height="12">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+              </svg>
+              Website ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- PROJECT CARD 5 -->
+        <div class="scroll-card" id="card-proj5" data-target="overlay-project5">
+          <div>
+            <div class="card-badge">Project 5</div>
+            <!-- Grid of app icons created by user -->
+            <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+              <img src="assets/iris_lens_icon.png" class="project-card-icon" style="width: 44px; height: 44px; border-radius: 10px; margin-bottom: 0;" title="Iris Lens">
+              <img src="assets/scenink_icon.png" class="project-card-icon" style="width: 44px; height: 44px; border-radius: 10px; margin-bottom: 0;" title="ScenInk">
+              <img src="assets/octojam_icon.png" class="project-card-icon" style="width: 44px; height: 44px; border-radius: 10px; margin-bottom: 0;" title="OctoJam">
+              <img src="assets/steady_icon.png" class="project-card-icon" style="width: 44px; height: 44px; border-radius: 10px; margin-bottom: 0;" title="Steady">
+              <img src="assets/z_icon.png" class="project-card-icon" style="width: 44px; height: 44px; border-radius: 10px; margin-bottom: 0;" title="Zeta">
+            </div>
+            <h3>App Icons</h3>
+            <div class="project-tags">
+              <span>Icon Design</span>
+            </div>
+            <p>
+              A curated collection of custom-designed application icons for iOS, iPadOS, and macOS, showcasing visual storytelling and branding.
+            </p>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem;">
+            <p style="color: #a855f7; font-size: 0.8rem; font-weight: 600; text-align: left; margin: 0;">Click to view collection ↗</p>
+          </div>
+        </div>
+
+      </div>
+      <button class="slider-arrow next-arrow" aria-label="Next card">&gt;</button>
+    </div>
+
+    <!-- Custom Progress (Simulated Lymph Vessel) -->
+    <div class="flow-progress-wrapper">
+      <div class="flow-progress-bar" id="projects-slider-progress"></div>
+    </div>
+  </section>
+
+  <!-- Contacts Section -->
+  <section id="contacts" class="contacts-section">
+    <div class="slider-title-wrapper" style="padding: 0; margin-bottom: 2rem; text-align: center;">
+      <h2 class="section-title">Let's <span>Get in Touch</span></h2>
+      <p class="section-subtitle">Have a project in mind? Let's build something great together.</p>
+    </div>
+    
+    <div class="contacts-grid">
+      <!-- Email -->
+      <a href="mailto:giuliasilvano01@libero.it" class="contact-card">
+        <div class="contact-icon-wrapper">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        </div>
+        <h3>Email</h3>
+        <p>giuliasilvano01@libero.it</p>
+      </a>
+      
+      <!-- Telefono -->
+      <a href="tel:+393403100236" class="contact-card">
+        <div class="contact-icon-wrapper">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+        </div>
+        <h3>Phone</h3>
+        <p>+39 340 310 0236</p>
+      </a>
+      
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/giulia-silvano-561432254" target="_blank" rel="noopener noreferrer" class="contact-card">
+        <div class="contact-icon-wrapper">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </div>
+        <h3>LinkedIn</h3>
+        <p>giulia-silvano-561432254</p>
+      </a>
+      
+      <!-- GitHub -->
+      <a href="https://github.com/JulsMoon" target="_blank" rel="noopener noreferrer" class="contact-card">
+        <div class="contact-icon-wrapper">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </div>
+        <h3>GitHub</h3>
+        <p>JulsMoon</p>
+      </a>
+    </div>
+  </section>
+</div>
+
+<!-- Sidebar Modal (Barra Laterale) -->
+<div id="sidebar-modal" class="sidebar">
+  <button class="sidebar-close" aria-label="Close sidebar">&times;</button>
+  <div class="sidebar-content">
+    <div class="sidebar-photo-container">
+      <img src="assets/profile.png" alt="Giulia Silvano" class="sidebar-profile-img">
+    </div>
+    <div class="sidebar-info">
+      <h2>Giulia Silvano</h2>
+      <p class="sidebar-subtitle">Biomedical Engineer &amp; iOS Developer</p>
+      <p class="sidebar-motto">"Curious by nature, committed by choice"</p>
+      <div class="sidebar-summary-placeholder">
+        <p>Hi, I’m Giulia — a Biomedical Engineering student and iOS developer in training at the Apple Developer Academy. I combine engineering, accessibility, and human-centered design to create digital experiences that are clear, inclusive, and meaningful. My work connects app development, UI/UX design, visual assets, game design, and project management, supported by a technical background in programming and engineering tools, and an international mindset shaped by languages and communication.</p>
+      </div>
+    </div>
+    <div class="sidebar-contacts">
+      <div class="sidebar-contacts-title">Let's Get in Touch</div>
+      <div class="sidebar-contacts-grid">
+        <a href="mailto:giuliasilvano01@libero.it" class="sidebar-contact-item" aria-label="Email">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        </a>
+        <a href="tel:+393403100236" class="sidebar-contact-item" aria-label="Phone">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/giulia-silvano-561432254" target="_blank" rel="noopener noreferrer" class="sidebar-contact-item" aria-label="LinkedIn">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        </a>
+        <a href="https://github.com/JulsMoon" target="_blank" rel="noopener noreferrer" class="sidebar-contact-item" aria-label="GitHub">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="sidebar-overlay" class="sidebar-overlay-backdrop"></div>
+
+<!-- OVERLAYS (MODALS) -->
+
+<!-- Biography Overlay -->
+<div class="overlay" id="overlay-about">
+  <div class="overlay-content">
+    <button class="close-btn" aria-label="Close overlay">&times;</button>
+    <div class="card-badge">About Me</div>
+    <h3>My <span>Story</span></h3>
+    <p style="margin-bottom: 1.5rem; line-height: 1.8; text-align: left;">
+      Hi, I’m <strong>Giulia</strong> — a final-year <strong>Biomedical Engineering</strong> student and iOS developer in training at the <strong>Apple Developer Academy</strong>.
+    </p>
+    <p style="margin-bottom: 1.5rem; line-height: 1.8; text-align: left;">
+      My engineering background has shaped the way I approach technology: with attention to people, needs, and real-world impact. During my Academy journey, I have connected this perspective with <strong>accessibility-focused projects</strong>, exploring how digital products can become clearer, more inclusive, and easier to use.
+    </p>
+    <p style="margin-bottom: 1.5rem; line-height: 1.8; text-align: left;">
+      I have built a solid <strong>technical foundation</strong> through programming and engineering tools such as <strong>C, C++, Java, SQL, MATLAB, FEBio, Swift, Xcode</strong>, and the <em>Cisco Programming Essentials in C++</em> certification. At the same time, I have grown through projects involving <strong>UI/UX design</strong>, app interfaces, icons, visual assets, <strong>game design</strong>, and <strong>project management</strong>.
+    </p>
+    <p style="line-height: 1.8; text-align: left;">
+      I’m curious, adaptable, and goal-oriented, with a strong interest in languages and communication. I speak <strong>Italian and English</strong>, study <strong>Chinese</strong>, and have basic knowledge of <strong>Spanish</strong>.
+    </p>
+  </div>
+</div>
+
+<!-- Skills Overlay -->
+<div class="overlay" id="overlay-skills">
+  <div class="overlay-content">
+    <button class="close-btn" aria-label="Close overlay">&times;</button>
+    <div class="card-badge">Skills</div>
+    <h3>Core <span>Skills</span></h3>
+    <p style="margin-bottom: 2rem; line-height: 1.8; text-align: left;">
+      Analytical capabilities refined through university tutoring and multidisciplinary teamwork at the Academy.
+    </p>
+    <div style="margin-top: 1.5rem;">
+      <!-- Category 1: App Development -->
+      <div class="skills-category">
+        <h4>App Development</h4>
+        <div class="skills-tags">
+          <span class="skill-tag">Swift</span>
+          <span class="skill-tag">Xcode</span>
+          <span class="skill-tag">iOS Development</span>
+          <span class="skill-tag">App Design</span>
+          <span class="skill-tag">Objective-C</span>
+        </div>
+      </div>
+
+      <!-- Category 2: UI/UX & Visual Design -->
+      <div class="skills-category">
+        <h4>UI/UX &amp; Visual Design</h4>
+        <div class="skills-tags">
+          <span class="skill-tag">User Interface Design</span>
+          <span class="skill-tag">User Experience Design</span>
+          <span class="skill-tag">Prototyping</span>
+          <span class="skill-tag">Wireframing</span>
+          <span class="skill-tag">User Flows</span>
+          <span class="skill-tag">Accessibility Design</span>
+          <span class="skill-tag">Icon Design</span>
+          <span class="skill-tag">Visual Assets</span>
+          <span class="skill-tag">Digital Product Design</span>
+        </div>
+      </div>
+
+      <!-- Category 3: Game Design -->
+      <div class="skills-category">
+        <h4>Game Design</h4>
+        <div class="skills-tags">
+          <span class="skill-tag">Game Interfaces</span>
+          <span class="skill-tag">Interaction Design</span>
+          <span class="skill-tag">Player Experience</span>
+          <span class="skill-tag">Visual Asset Creation</span>
+          <span class="skill-tag">Game UI/UX</span>
+        </div>
+      </div>
+
+      <!-- Category 4: Programming & Engineering Tools -->
+      <div class="skills-category">
+        <h4>Programming &amp; Engineering Tools</h4>
+        <div class="skills-tags">
+          <span class="skill-tag">C</span>
+          <span class="skill-tag">C++</span>
+          <span class="skill-tag">Java</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">MATLAB</span>
+          <span class="skill-tag">FEBio</span>
+          <span class="skill-tag">Assembly</span>
+          <span class="skill-tag">Computational Modelling</span>
+        </div>
+      </div>
+
+      <!-- Category 5: Tools -->
+      <div class="skills-category">
+        <h4>Tools</h4>
+        <div class="skills-tags">
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Sketch</span>
+          <span class="skill-tag">Keynote</span>
+          <span class="skill-tag">Microsoft Office</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">Email Management</span>
+          <span class="skill-tag">Video Editing</span>
+        </div>
+      </div>
+
+      <!-- Category 6: Project & Collaboration -->
+      <div class="skills-category">
+        <h4>Project &amp; Collaboration</h4>
+        <div class="skills-tags">
+          <span class="skill-tag">Project Management</span>
+          <span class="skill-tag">Requirements Analysis</span>
+          <span class="skill-tag">Teamwork</span>
+          <span class="skill-tag">Problem Solving</span>
+          <span class="skill-tag">Communication</span>
+          <span class="skill-tag">Fast Learning</span>
+          <span class="skill-tag">Flexibility</span>
+          <span class="skill-tag">Reliability</span>
+        </div>
+      </div>
+
+      <!-- Category 7: Languages -->
+      <div class="skills-category">
+        <h4>Languages</h4>
+        <div class="skills-tags">
+          <span class="skill-tag">Italian</span>
+          <span class="skill-tag">English</span>
+          <span class="skill-tag">Chinese</span>
+          <span class="skill-tag">Spanish</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Languages Overlay -->
+<div class="overlay" id="overlay-languages">
+  <div class="overlay-content">
+    <button class="close-btn" aria-label="Close overlay">&times;</button>
+    <div class="card-badge">Languages</div>
+    <h3>Spoken <span>Languages</span></h3>
+    <p style="margin-bottom: 2rem; line-height: 1.8; text-align: left;">
+      Fluent communication skills to collaborate effectively across globally diverse environments.
+    </p>
+    <div class="skills-list" style="margin-top: 1rem;">
+      <div class="skill-item">
+        <div class="skill-info"><span>Italian</span><span>Native</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width: 100%;"></div></div>
+      </div>
+      <div class="skill-item" style="margin-top: 1.5rem;">
+        <div class="skill-info"><span>English</span><span>Fluent / Professional</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width: 100%;"></div></div>
+      </div>
+      <div class="skill-item" style="margin-top: 1.5rem;">
+        <div class="skill-info"><span>Chinese</span><span>Intermediate / B1</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width: 60%;"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Projects Deck Overlay -->
+<div class="overlay" id="overlay-projects-deck">
+  <div class="overlay-content">
+    <button class="close-btn" aria-label="Close overlay">&times;</button>
+    <div class="card-badge">Projects</div>
+    <h3>My <span>Projects</span></h3>
+    <p style="text-align: left;">Select a project from the deck below to view details.</p>
+    
+    <div class="projects-deck-list">
+      <!-- Project 1 Trigger -->
+      <div class="deck-card" data-project-target="overlay-project1">
+        <div class="card-badge">Project 1</div>
+        <img src="assets/iris_lens_icon.png" alt="Iris Lens App Icon" class="project-card-icon" style="margin-top: 0.5rem;">
+        <h4>Iris Lens</h4>
+        <div class="project-tags">
+          <span>Project Manager</span>
+          <span>UI/UX Design</span>
+          <span>Icon Design</span>
+          <span>Accessibility</span>
+          <span>User Research</span>
+        </div>
+        <p class="deck-click-hint">Click to expand project ↗</p>
+      </div>
+
+      <!-- Project 2 Trigger -->
+      <div class="deck-card" data-project-target="overlay-project2">
+        <div class="card-badge">Project 2</div>
+        <img src="assets/scenink_icon.png" alt="ScenInk App Icon" class="project-card-icon" style="margin-top: 0.5rem;">
+        <h4>ScenInk</h4>
+        <div class="project-tags">
+          <span>Project Manager</span>
+          <span>UI/UX Design</span>
+          <span>Icon Design</span>
+          <span>User Research</span>
+        </div>
+        <p class="deck-click-hint">Click to expand project ↗</p>
+      </div>
+
+      <!-- Project 3 Trigger -->
+      <div class="deck-card" data-project-target="overlay-project3">
+        <div class="card-badge">Project 3</div>
+        <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+          <img src="assets/amazed_game_icon.png" alt="AmazeD Game Icon" class="project-card-icon" style="margin-bottom: 0;">
+          <img src="assets/amazed_controller_icon.png" alt="AmazeD Controller Icon" class="project-card-icon" style="margin-bottom: 0;">
+        </div>
+        <h4>AmazeD</h4>
+        <div class="project-tags">
+          <span>Project Manager</span>
+          <span>Game Design</span>
+          <span>UI/UX Design</span>
+          <span>3D Modeling</span>
+          <span>Ideation</span>
+        </div>
+        <p class="deck-click-hint">Click to expand project ↗</p>
+      </div>
+
+      <!-- Project 4 Trigger -->
+      <div class="deck-card" data-project-target="overlay-project4">
+        <div class="card-badge">Project 4</div>
+        <img src="assets/octojam_icon.png" alt="OctoJam App Icon" class="project-card-icon" style="margin-top: 0.5rem;">
+        <h4>OctoJam</h4>
+        <div class="project-tags">
+          <span>Project Manager</span>
+          <span>UI/UX Design</span>
+          <span>Icon Design</span>
+        </div>
+        <p class="deck-click-hint">Click to expand project ↗</p>
+      </div>
+
+      <!-- Project 5 Trigger -->
+      <div class="deck-card" data-project-target="overlay-project5">
+        <div class="card-badge">Project 5</div>
+        <div style="display: flex; gap: 0.25rem; margin-top: 0.5rem; margin-bottom: 0.5rem; justify-content: center; flex-wrap: wrap;">
+          <img src="assets/iris_lens_icon.png" class="project-card-icon" style="width: 32px; height: 32px; border-radius: 6px; margin-bottom: 0;">
+          <img src="assets/scenink_icon.png" class="project-card-icon" style="width: 32px; height: 32px; border-radius: 6px; margin-bottom: 0;">
+          <img src="assets/octojam_icon.png" class="project-card-icon" style="width: 32px; height: 32px; border-radius: 6px; margin-bottom: 0;">
+          <img src="assets/steady_icon.png" class="project-card-icon" style="width: 32px; height: 32px; border-radius: 6px; margin-bottom: 0;">
+          <img src="assets/z_icon.png" class="project-card-icon" style="width: 32px; height: 32px; border-radius: 6px; margin-bottom: 0;">
+        </div>
+        <h4>App Icons</h4>
+        <div class="project-tags">
+          <span>Icon Design</span>
+        </div>
+        <p class="deck-click-hint">Click to expand project ↗</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Project 1 Detail Overlay -->
+<div class="overlay" id="overlay-project1">
+  <div class="overlay-content">
+    <button class="close-btn" aria-label="Close overlay" data-back-to="overlay-projects-deck">&times;</button>
+    
+    <div class="project-header" style="display: flex; align-items: center; gap: 1.25rem; margin-top: 1rem; margin-bottom: 1.5rem;">
+      <img src="assets/iris_lens_icon.png" alt="Iris Lens App Icon" class="project-detail-icon">
+      <div>
+        <div class="card-badge" style="margin-bottom: 0.25rem;">iOS Application</div>
+        <h3 style="margin: 0; font-size: 2rem; background: linear-gradient(135deg, #1a1a24, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: left;">Iris Lens</h3>
+      </div>
+    </div>
+
+    <div class="project-tags" style="margin-bottom: 2rem;">
+      <span>Project Manager</span>
+      <span>UI/UX Design</span>
+      <span>Icon Design</span>
+      <span>Accessibility</span>
+      <span>User Research</span>
+    </div>
+
+    <div class="project-details-single-col" style="text-align: left; max-width: 50rem; margin: 0 auto 2rem;">
+      <h4 style="color: #7c3aed; font-weight: 700; font-size: 1.35rem; margin-bottom: 0.75rem; border-bottom: 1.5px solid rgba(168, 85, 247, 0.15); padding-bottom: 0.5rem;">My Role & Focus</h4>
+      <p style="line-height: 1.8; margin-bottom: 1.5rem;">
+        In the development of this application, I took on the dual responsibility of <strong>Project Manager</strong> and <strong>Designer</strong>. My core mission was to bridge user needs with accessible tech solutions, ensuring that individuals with color vision deficiencies could interact with the app naturally.
+      </p>
+      <ul style="list-style-type: none; padding: 0; margin: 0 0 2.5rem 0; display: flex; flex-direction: column; gap: 1rem;">
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>User Research & Insights:</strong> I conducted user interviews with target users experiencing different forms of color blindness (Protanomaly, Deuteranomaly, Tritanomaly) to pinpoint their real-world navigation challenges.
+        </li>
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>UI/UX & Accessibility:</strong> Designed the high-contrast interface and customized real-time camera views, focusing on spatial layout, clear color readouts, and accessible visual assets suited for audiences with color vision deficiencies.
+        </li>
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>App Icon Design:</strong> Created the official application icon, ensuring the visual metaphor reflects clarity, color accessibility, and Apple App Store design guidelines.
+        </li>
+      </ul>
+      
+      <div style="display: flex; justify-content: center; margin-top: 2rem;">
+        <a href="https://apps.apple.com/it/app/iris-lens/id6756568837?l=en-GB" target="_blank" rel="noopener noreferrer" class="app-store-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; background: #1a1a24; color: #fff; padding: 0.85rem 1.75rem; border-radius: 0.85rem; text-decoration: none; font-weight: 600; font-size: 1rem; transition: background 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.22.67-2.94 1.51-.63.73-1.18 1.87-1.03 2.97 1.12.09 2.27-.56 2.98-1.42z"/>
+          </svg>
+          Download on the App Store
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Project 2 Detail Overlay -->
+<div class="overlay" id="overlay-project2">
+  <div class="overlay-content">
+    <button class="close-btn" aria-label="Close overlay" data-back-to="overlay-projects-deck">&times;</button>
+    
+    <div class="project-header" style="display: flex; align-items: center; gap: 1.25rem; margin-top: 1rem; margin-bottom: 1.5rem;">
+      <img src="assets/scenink_icon.png" alt="ScenInk App Icon" class="project-detail-icon">
+      <div>
+        <div class="card-badge" style="margin-bottom: 0.25rem;">iPadOS Application</div>
+        <h3 style="margin: 0; font-size: 2rem; background: linear-gradient(135deg, #1a1a24, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: left;">ScenInk</h3>
+      </div>
+    </div>
+
+    <div class="project-tags" style="margin-bottom: 2rem;">
+      <span>Project Manager</span>
+      <span>UI/UX Design</span>
+      <span>Icon Design</span>
+      <span>User Research</span>
+    </div>
+
+    <div class="project-details-single-col" style="text-align: left; max-width: 50rem; margin: 0 auto 2rem;">
+      <h4 style="color: #7c3aed; font-weight: 700; font-size: 1.35rem; margin-bottom: 0.75rem; border-bottom: 1.5px solid rgba(168, 85, 247, 0.15); padding-bottom: 0.5rem;">My Role & Focus</h4>
+      <p style="line-height: 1.8; margin-bottom: 1.5rem;">
+        During the development of ScenInk, I served as the <strong>Project Manager</strong> and lead <strong>Designer</strong>. I was responsible for coordinating team workflows, designing the core user experience, and conducting target audience research.
+      </p>
+      <ul style="list-style-type: none; padding: 0; margin: 0 0 2.5rem 0; display: flex; flex-direction: column; gap: 1rem;">
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>User Research & Insights:</strong> I led the research phase, interviewing potential users and sketching artists to gather feedback on their creative habits, which directly shaped the 3D posing and tracing workflows.
+        </li>
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>UI/UX Design:</strong> Designed the user interface for importing, positioning, and posing 3D models, ensuring seamless integration of the AR viewport and drawing canvas.
+        </li>
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>App Icon Design:</strong> Created the official application icon, capturing the balance between digital 3D space, creative drawing tools, and premium visual styling.
+        </li>
+      </ul>
+      
+      <div style="display: flex; justify-content: center; margin-top: 2rem;">
+        <a href="https://apps.apple.com/us/app/scenink-draw-3d-scenes/id6760011718" target="_blank" rel="noopener noreferrer" class="app-store-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; background: #1a1a24; color: #fff; padding: 0.85rem 1.75rem; border-radius: 0.85rem; text-decoration: none; font-weight: 600; font-size: 1rem; transition: background 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.22.67-2.94 1.51-.63.73-1.18 1.87-1.03 2.97 1.12.09 2.27-.56 2.98-1.42z"/>
+          </svg>
+          Download on the App Store
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Project 3 Detail Overlay -->
+<div class="overlay" id="overlay-project3">
+  <div class="overlay-content">
+    <button class="close-btn" aria-label="Close overlay" data-back-to="overlay-projects-deck">&times;</button>
+    
+    <div class="project-cover-container" style="margin-top: 1rem; margin-bottom: 1.5rem; border-radius: 1.25rem; overflow: hidden; border: 1.5px solid rgba(168, 85, 247, 0.2); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);">
+      <img src="assets/amazed_cover.jpg" alt="AmazeD: Wizard's Adventure Cover" style="width: 100%; height: 260px; object-fit: cover; display: block;">
+    </div>
+    
+    <div class="project-header" style="display: flex; align-items: center; gap: 1.25rem; margin-top: 1rem; margin-bottom: 1.5rem;">
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <img src="assets/amazed_game_icon.png" alt="AmazeD Game Icon" class="project-detail-icon">
+        <img src="assets/amazed_controller_icon.png" alt="AmazeD Controller Icon" class="project-detail-icon">
+      </div>
+      <div>
+        <div class="card-badge" style="margin-bottom: 0.25rem;">macOS &amp; tvOS Game / iOS Controller</div>
+        <h3 style="margin: 0; font-size: 2rem; background: linear-gradient(135deg, #1a1a24, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: left;">AmazeD: Wizard's Adventure</h3>
+      </div>
+    </div>
+
+    <div class="project-tags" style="margin-bottom: 2rem;">
+      <span>Project Manager</span>
+      <span>Game Design</span>
+      <span>UI/UX Design</span>
+      <span>3D Modeling</span>
+      <span>Ideation</span>
+    </div>
+
+    <div class="project-details-single-col" style="text-align: left; max-width: 50rem; margin: 0 auto 2rem;">
+      <h4 style="color: #7c3aed; font-weight: 700; font-size: 1.35rem; margin-bottom: 0.75rem; border-bottom: 1.5px solid rgba(168, 85, 247, 0.15); padding-bottom: 0.5rem;">My Role & Focus</h4>
+      <p style="line-height: 1.8; margin-bottom: 1.5rem;">
+        For this cross-device multiplayer project, I acted as the <strong>Project Manager</strong>, lead <strong>Game Designer</strong>, and <strong>3D Modeler</strong>. I conceptualized the game's core loop, designed its multi-device UI/UX workflow, and created all visual assets and characters.
+      </p>
+      <ul style="list-style-type: none; padding: 0; margin: 0 0 2.5rem 0; display: flex; flex-direction: column; gap: 1rem;">
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>Ideation & Concept:</strong> Co-created the game's original concept, pitching a local party setup that uses the iPhone's gyroscope as a steering input device.
+        </li>
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>Game Design:</strong> Designed all gameplay environments, levels, labyrinth layouts, buttons, and custom layout graphics.
+        </li>
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>UI/UX Design:</strong> Created the user experience interfaces for both the main display (macOS/tvOS splitscreen) and the iPhone mobile controller screen.
+        </li>
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>3D Modeling &amp; Characters:</strong> Designed and developed the 3D models for all in-game assets, labyrinth walls, items, and the playable wizard characters.
+        </li>
+      </ul>
+
+      <!-- GALLERY Section -->
+      <div class="project-gallery-section" style="margin-top: 2.5rem; border-top: 1.5px solid rgba(168, 85, 247, 0.15); padding-top: 2rem;">
+        <h4 style="margin: 0 0 1.5rem 0; font-size: 1.45rem; font-weight: 700; color: #1a1a24; text-transform: uppercase; letter-spacing: 0.05em; text-align: left; border-bottom: 1.5px solid rgba(168, 85, 247, 0.15); padding-bottom: 0.5rem;">Gallery</h4>
+        
+        <div class="gallery-subsection" style="margin-bottom: 2rem;">
+          <h5 style="margin: 0 0 1.25rem 0; font-size: 1.15rem; font-weight: 600; color: #7c3aed; text-align: left; text-transform: uppercase; letter-spacing: 0.05em;">UI/UX Design</h5>
+          
+          <div class="controller-mockups-section" style="margin-top: 1rem;">
+            <h6 style="color: rgba(26, 26, 36, 0.65); font-size: 0.85rem; font-weight: 600; margin: 0 0 1rem 0; letter-spacing: 0.05em; text-transform: uppercase; text-align: left;">iOS Controller Interface</h6>
+            <div style="display: flex; flex-direction: column; gap: 1.25rem; align-items: center; margin-bottom: 2rem;">
+              <img src="assets/amazed_phone_ui1.png" alt="iOS Controller - Connecting State" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+              <img src="assets/amazed_phone_ui2.png" alt="iOS Controller - Character Selection" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+              <img src="assets/amazed_phone_ui3.png" alt="iOS Controller - Character Selection Selected" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+            </div>
+          </div>
+
+          <div class="game-mockups-section" style="margin-top: 1rem;">
+            <h6 style="color: rgba(26, 26, 36, 0.65); font-size: 0.85rem; font-weight: 600; margin: 0 0 1rem 0; letter-spacing: 0.05em; text-transform: uppercase; text-align: left;">macOS &amp; tvOS Game Display</h6>
+            <div style="display: flex; flex-direction: column; gap: 1.25rem; align-items: center;">
+              <img src="assets/amazed_game_ui1.jpg" alt="macOS/tvOS Game - Selected Champions Lobby" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+              <img src="assets/amazed_game_ui2.png" alt="macOS/tvOS Game - 4-Player Splitscreen Gameplay" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-subsection" style="margin-bottom: 2rem;">
+          <h5 style="margin: 0 0 1.25rem 0; font-size: 1.15rem; font-weight: 600; color: #7c3aed; text-align: left; text-transform: uppercase; letter-spacing: 0.05em;">Visual Elements</h5>
+          <div style="display: flex; flex-direction: column; gap: 1.25rem; background: rgba(168, 85, 247, 0.03); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(168, 85, 247, 0.1);">
+            <!-- Main visual pillars & banners -->
+            <div style="display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: center; align-items: center;">
+              <img src="assets/amazed_visual1.png" alt="Fire Pillar" style="height: 120px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <img src="assets/amazed_visual2.png" alt="Blue Flame Pillars" style="height: 120px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <img src="assets/amazed_visual3.png" alt="Blue Crystal Cluster" style="height: 120px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <img src="assets/amazed_visual4.png" alt="Wooden Post Lantern" style="height: 120px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <img src="assets/amazed_visual5.png" alt="Purple Crystal Banner" style="height: 120px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </div>
+            <!-- Ability icons grouped in a single non-wrapping row -->
+            <div style="display: flex; flex-wrap: nowrap; gap: 0.75rem; justify-content: center; align-items: center; overflow-x: auto; padding: 0.25rem 0;">
+              <img src="assets/amazed_visual6.png" alt="Fire Ability Icon" style="height: 70px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <img src="assets/amazed_visual7.png" alt="Nature Ability Icon" style="height: 70px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <img src="assets/amazed_visual8.png" alt="Beast Ability Icon" style="height: 70px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <img src="assets/amazed_visual9.png" alt="Portal Ability Icon" style="height: 70px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <img src="assets/amazed_visual10.png" alt="Star Ability Icon" style="height: 70px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <img src="assets/amazed_visual11.png" alt="Shield Ability Icon" style="height: 70px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            </div>
+          </div>
+        </div>
+
+        <div class="gallery-subsection" style="margin-bottom: 2rem;">
+          <h5 style="margin: 0 0 1.25rem 0; font-size: 1.15rem; font-weight: 600; color: #7c3aed; text-align: left; text-transform: uppercase; letter-spacing: 0.05em;">Buttons</h5>
+          <div style="display: flex; flex-wrap: nowrap; gap: 0.75rem; justify-content: center; align-items: center; background: rgba(168, 85, 247, 0.03); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(168, 85, 247, 0.1); overflow-x: auto;">
+            <img src="assets/amazed_button1.png" alt="Music Controls Set" style="height: 75px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="assets/amazed_button2.png" alt="Sound Controls Set" style="height: 75px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="assets/amazed_button3.png" alt="Play Again / Main Menu Set" style="height: 75px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="assets/amazed_button4.png" alt="Settings Gear Button" style="height: 60px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="assets/amazed_button5.png" alt="Back Chevron Button" style="height: 60px; width: auto; display: block; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.12)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+          </div>
+        </div>
+
+        <div class="gallery-subsection" style="margin-bottom: 2rem;">
+          <h5 style="margin: 0 0 1.25rem 0; font-size: 1.15rem; font-weight: 600; color: #7c3aed; text-align: left; text-transform: uppercase; letter-spacing: 0.05em;">Layouts</h5>
+          <div style="display: flex; flex-direction: column; gap: 1.25rem; align-items: center; background: rgba(168, 85, 247, 0.03); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(168, 85, 247, 0.1);">
+            <img src="assets/amazed_layout1.png" alt="Options Settings Layout" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="assets/amazed_layout2.png" alt="HUD Settings Checklist Layout" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+          </div>
+        </div>
+
+        <div class="gallery-subsection" style="margin-bottom: 2rem;">
+          <h5 style="margin: 0 0 1.25rem 0; font-size: 1.15rem; font-weight: 600; color: #7c3aed; text-align: left; text-transform: uppercase; letter-spacing: 0.05em;">Graphics</h5>
+          <div style="display: flex; flex-direction: column; gap: 1.25rem; align-items: center; background: rgba(168, 85, 247, 0.03); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(168, 85, 247, 0.1);">
+            <img src="assets/amazed_graphics1.jpg" alt="Lobby Background Scene" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="assets/amazed_graphics2.jpg" alt="Wizard Characters Artwork" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+          </div>
+        </div>
+
+        <div class="gallery-subsection" style="margin-bottom: 1.5rem;">
+          <h5 style="margin: 0 0 1.25rem 0; font-size: 1.15rem; font-weight: 600; color: #7c3aed; text-align: left; text-transform: uppercase; letter-spacing: 0.05em;">3D Assets</h5>
+          <div style="display: flex; flex-direction: column; gap: 1.25rem; align-items: center; background: rgba(168, 85, 247, 0.03); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(168, 85, 247, 0.1);">
+            <img src="assets/amazed_3d_asset1.png" alt="Red-Haired Wizard 3D Model Render" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="assets/amazed_3d_asset2.png" alt="Witch on Broom 3D Model Render" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+            <img src="assets/amazed_3d_asset3.png" alt="Stone Portal 3D Model Render" style="width: 100%; max-width: 480px; height: auto; border-radius: 0.5rem; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.08)); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+          </div>
+        </div>
+      </div>
+      
+      <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap;">
+        <a href="https://apps.apple.com/it/app/amazed-wizards-adventure/id6772945844?l=en-GB" target="_blank" rel="noopener noreferrer" class="app-store-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; background: #1a1a24; color: #fff; padding: 0.85rem 1.5rem; border-radius: 0.85rem; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: background 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <svg fill="currentColor" viewBox="0 0 24 24" width="18" height="18">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.22.67-2.94 1.51-.63.73-1.18 1.87-1.03 2.97 1.12.09 2.27-.56 2.98-1.42z"/>
+          </svg>
+          Download Game
+        </a>
+        <a href="https://apps.apple.com/it/app/amazed-controller/id6779685625" target="_blank" rel="noopener noreferrer" class="app-store-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; background: #1a1a24; color: #fff; padding: 0.85rem 1.5rem; border-radius: 0.85rem; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: background 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <svg fill="currentColor" viewBox="0 0 24 24" width="18" height="18">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.22.67-2.94 1.51-.63.73-1.18 1.87-1.03 2.97 1.12.09 2.27-.56 2.98-1.42z"/>
+          </svg>
+          Download Controller
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Project 4 Detail Overlay -->
+<div class="overlay" id="overlay-project4">
+  <div class="overlay-content">
+    <button class="close-btn" aria-label="Close overlay" data-back-to="overlay-projects-deck">&times;</button>
+    
+    <div class="project-header" style="display: flex; align-items: center; gap: 1.25rem; margin-top: 1rem; margin-bottom: 1.5rem;">
+      <img src="assets/octojam_icon.png" alt="OctoJam App Icon" class="project-detail-icon">
+      <div>
+        <div class="card-badge" style="margin-bottom: 0.25rem;">iOS Application</div>
+        <h3 style="margin: 0; font-size: 2rem; background: linear-gradient(135deg, #1a1a24, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: left;">OctoJam</h3>
+      </div>
+    </div>
+
+    <div class="project-tags" style="margin-bottom: 2rem;">
+      <span>Project Manager</span>
+      <span>UI/UX Design</span>
+      <span>Icon Design</span>
+    </div>
+
+    <div class="project-details-single-col" style="text-align: left; max-width: 50rem; margin: 0 auto 2rem;">
+      <h4 style="color: #7c3aed; font-weight: 700; font-size: 1.35rem; margin-bottom: 0.75rem; border-bottom: 1.5px solid rgba(168, 85, 247, 0.15); padding-bottom: 0.5rem;">My Role & Focus</h4>
+      <p style="line-height: 1.8; margin-bottom: 1.5rem;">
+        For this peer-to-peer audio project, I took on the roles of <strong>Project Manager</strong>, <strong>UI/UX Designer</strong>, and <strong>App Icon Creator</strong>. I coordinated our team’s progress, fully designed the interactive experience, and crafted the visual identity of the app.
+      </p>
+      <ul style="list-style-type: none; padding: 0; margin: 0 0 2.5rem 0; display: flex; flex-direction: column; gap: 1rem;">
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>UI/UX Design:</strong> Managed and completely designed the application’s user interface, focusing on intuitive device connection status and real-time audio synchronization controls.
+        </li>
+        <li style="position: relative; padding-left: 1.5rem; line-height: 1.6;">
+          <span style="position: absolute; left: 0; color: #a855f7;">•</span>
+          <strong>App Icon Design:</strong> Created the app icon, drawing on the octopus visual theme to communicate multi-device synchronization and audio network connectivity.
+        </li>
+      </ul>
+
+      <h4 style="color: #7c3aed; font-weight: 700; font-size: 1.35rem; margin-top: 2.5rem; margin-bottom: 0.5rem; border-bottom: 1.5px solid rgba(168, 85, 247, 0.15); padding-bottom: 0.5rem;">Interface Gallery</h4>
+      <div style="display: flex; flex-direction: column; gap: 1.25rem; align-items: center; background: rgba(168, 85, 247, 0.03); padding: 1.5rem; border-radius: 0.75rem; border: 1px solid rgba(168, 85, 247, 0.1); margin-bottom: 1.5rem;">
+        <img src="assets/octojam_gallery1.png" alt="OctoJam Onboarding & Setup Screens" style="width: 100%; max-width: 540px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+        <img src="assets/octojam_gallery2.png" alt="OctoJam Lobby & Sync Orbit Screens" style="width: 100%; max-width: 540px; height: auto; border-radius: 0.5rem; display: block; box-shadow: 0 4px 12px rgba(0,0,0,0.1); transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+      </div>
+
+      <div style="display: flex; justify-content: center; margin-top: 2rem;">
+        <a href="https://antoniobonetti.dev" target="_blank" rel="noopener noreferrer" class="app-store-btn" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; background: #1a1a24; color: #fff; padding: 0.85rem 1.75rem; border-radius: 0.85rem; text-decoration: none; font-weight: 600; font-size: 1rem; transition: background 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="20" height="20">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+          </svg>
+          Visit Project Website
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Project 5 Detail Overlay -->
+<div class="overlay" id="overlay-project5">
+  <div class="overlay-content">
+    <button class="close-btn" aria-label="Close overlay" data-back-to="overlay-projects-deck">&times;</button>
+    
+    <div class="project-header" style="display: flex; align-items: center; gap: 1.25rem; margin-top: 1rem; margin-bottom: 1.5rem;">
+      <div style="display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;">
+        <img src="assets/iris_lens_icon.png" style="width: 30px; height: 30px; border-radius: 6px;">
+        <img src="assets/scenink_icon.png" style="width: 30px; height: 30px; border-radius: 6px;">
+        <img src="assets/octojam_icon.png" style="width: 30px; height: 30px; border-radius: 6px;">
+        <img src="assets/steady_icon.png" style="width: 30px; height: 30px; border-radius: 6px;">
+        <img src="assets/z_icon.png" style="width: 30px; height: 30px; border-radius: 6px;">
+      </div>
+      <div>
+        <div class="card-badge" style="margin-bottom: 0.25rem;">Design Showcase</div>
+        <h3 style="margin: 0; font-size: 2rem; background: linear-gradient(135deg, #1a1a24, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-align: left;">App Icons</h3>
+      </div>
+    </div>
+
+    <div class="project-tags" style="margin-bottom: 2rem;">
+      <span>Icon Design</span>
+    </div>
+
+    <div class="project-details-single-col" style="text-align: left; max-width: 50rem; margin: 0 auto 2rem;">
+      <h4 style="color: #7c3aed; font-weight: 700; font-size: 1.35rem; margin-bottom: 0.75rem; border-bottom: 1.5px solid rgba(168, 85, 247, 0.15); padding-bottom: 0.5rem;">The Art of Icon Design</h4>
+      <p style="line-height: 1.8; margin-bottom: 2rem;">
+        An app icon is the first point of contact for users. My icon design process focuses on translating complex application logic into simple, recognizable, and highly polished visual metaphors that stand out on a user's home screen.
+      </p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+        <!-- Iris Lens -->
+        <div style="background: rgba(255,255,255,0.4); border: 1px solid rgba(168, 85, 247, 0.1); padding: 1.25rem; border-radius: 1.25rem; display: flex; align-items: center; gap: 1.5rem;">
+          <img src="assets/iris_lens_icon.png" style="width: 100px; height: 100px; border-radius: 20px; flex-shrink: 0; border: 1px solid rgba(168, 85, 247, 0.15); box-shadow: 0 4px 12px rgba(168, 85, 247, 0.12);">
+          <div>
+            <h5 style="margin: 0; font-size: 1.35rem; color: #1a1a24; font-weight: 700;">Iris Lens</h5>
+          </div>
+        </div>
+
+        <!-- ScenInk -->
+        <div style="background: rgba(255,255,255,0.4); border: 1px solid rgba(168, 85, 247, 0.1); padding: 1.25rem; border-radius: 1.25rem; display: flex; align-items: center; gap: 1.5rem;">
+          <img src="assets/scenink_icon.png" style="width: 100px; height: 100px; border-radius: 20px; flex-shrink: 0; border: 1px solid rgba(168, 85, 247, 0.15); box-shadow: 0 4px 12px rgba(168, 85, 247, 0.12);">
+          <div>
+            <h5 style="margin: 0; font-size: 1.35rem; color: #1a1a24; font-weight: 700;">ScenInk</h5>
+          </div>
+        </div>
+
+        <!-- OctoJam -->
+        <div style="background: rgba(255,255,255,0.4); border: 1px solid rgba(168, 85, 247, 0.1); padding: 1.25rem; border-radius: 1.25rem; display: flex; align-items: center; gap: 1.5rem;">
+          <img src="assets/octojam_icon.png" style="width: 100px; height: 100px; border-radius: 20px; flex-shrink: 0; border: 1px solid rgba(168, 85, 247, 0.15); box-shadow: 0 4px 12px rgba(168, 85, 247, 0.12);">
+          <div>
+            <h5 style="margin: 0; font-size: 1.35rem; color: #1a1a24; font-weight: 700;">OctoJam</h5>
+          </div>
+        </div>
+
+        <!-- Steady -->
+        <div style="background: rgba(255,255,255,0.4); border: 1px solid rgba(168, 85, 247, 0.1); padding: 1.25rem; border-radius: 1.25rem; display: flex; align-items: center; gap: 1.5rem;">
+          <img src="assets/steady_icon.png" style="width: 100px; height: 100px; border-radius: 20px; flex-shrink: 0; border: 1px solid rgba(168, 85, 247, 0.15); box-shadow: 0 4px 12px rgba(168, 85, 247, 0.12);">
+          <div>
+            <h5 style="margin: 0; font-size: 1.35rem; color: #1a1a24; font-weight: 700;">Steady</h5>
+          </div>
+        </div>
+
+        <!-- Zeta -->
+        <div style="background: rgba(255,255,255,0.4); border: 1px solid rgba(168, 85, 247, 0.1); padding: 1.25rem; border-radius: 1.25rem; display: flex; align-items: center; gap: 1.5rem;">
+          <img src="assets/z_icon.png" style="width: 100px; height: 100px; border-radius: 20px; flex-shrink: 0; border: 1px solid rgba(168, 85, 247, 0.15); box-shadow: 0 4px 12px rgba(168, 85, 247, 0.12);">
+          <div>
+            <h5 style="margin: 0; font-size: 1.35rem; color: #1a1a24; font-weight: 700;">Zeta</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ===================== PARTICLES & IMPULSES =====================
+  const pCanvas = document.getElementById('particles-canvas');
+  const pCtx = pCanvas.getContext('2d');
+  let particles = [];
+
+  function resizeParticles() {
+    pCanvas.width = window.innerWidth;
+    pCanvas.height = window.innerHeight;
+    createParticles();
+  }
+
+  function createParticles() {
+    particles = [];
+    const count = Math.floor((pCanvas.width * pCanvas.height) / 8000);
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * pCanvas.width,
+        y: Math.random() * pCanvas.height,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        size: Math.random() * 1.5 + 0.5,
+        opacity: Math.random() * 0.5 + 0.1,
+        isImpulse: Math.random() > 0.85
+      });
+    }
+  }
+
+  function animateParticles() {
+    pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
+    for (const p of particles) {
+      if (p.isImpulse) {
+        p.x += (Math.random() - 0.5) * 8;
+        p.y += (Math.random() - 0.5) * 8;
+        p.opacity = Math.random() > 0.7 ? 0.9 : 0.2; 
+      } else {
+        p.x += p.vx; p.y += p.vy;
+      }
+      if (p.x < 0) p.x = pCanvas.width;
+      if (p.x > pCanvas.width) p.x = 0;
+      if (p.y < 0) p.y = pCanvas.height;
+      if (p.y > pCanvas.height) p.y = 0;
+      pCtx.beginPath();
+      pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      if (p.isImpulse) {
+        pCtx.fillStyle = `rgba(124, 58, 237, ${p.opacity})`; 
+        pCtx.shadowBlur = 8;
+        pCtx.shadowColor = '#7c3aed';
+      } else {
+        pCtx.fillStyle = `rgba(109, 40, 217, ${p.opacity})`;
+        pCtx.shadowBlur = 0;
+      }
+      pCtx.fill();
+    }
+    requestAnimationFrame(animateParticles);
+  }
+
+  resizeParticles();
+  window.addEventListener('resize', resizeParticles);
+  animateParticles();
+
+  // ===================== LYMPHATIC NETWORK (Procedurale) =====================
+  const lCanvas = document.getElementById('lymph-canvas');
+  const lCtx = lCanvas.getContext('2d');
+  let branches = [];      // I rami della rete
+  let lymphDrops = [];     // Le gocce di linfa che scorrono
+  let lymphNodes = [];     // I linfonodi (nodi di giunzione)
+  const DROP_COUNT = 400;
+
+  function resizeLymph() {
+    lCanvas.width = window.innerWidth;
+    lCanvas.height = window.innerHeight;
+    generateNetwork();
+    createDrops();
+  }
+
+  // Genera la rete ricalcando i rami verdi dell'immagine di riferimento
+  function generateNetwork() {
+    branches = [];
+    lymphNodes = [];
+    const w = lCanvas.width;
+    const h = lCanvas.height;
+
+    // Tutte le coordinate sono in % della viewport, poi convertite in px
+    // Tracciate seguendo esattamente i rami verdi dell'immagine di riferimento
+
+    // Helper: converte array di [%x, %y] in {x, y} assoluti
+    function pts(arr) { return arr.map(([px, py]) => ({ x: px/100*w, y: py/100*h })); }
+
+    // Helper: crea un ramo con spessore e profondità, usando Catmull-Rom per curve lisce
+    function addPath(waypoints, thick, dep) {
+      const raw = pts(waypoints);
+      const smooth = catmullRom(raw, 20); // 20 punti interpolati per segmento
+      branches.push({ points: smooth, thickness: thick, depth: dep });
+    }
+
+    // Helper: aggiunge un linfonodo
+    function addNode(px, py, sz) {
+      lymphNodes.push({ x: px/100*w, y: py/100*h, size: sz });
+    }
+
+    // === DOTTO TORACICO CENTRALE (il tronco più grande, corre al centro) ===
+    addPath([[49, 95], [49, 85], [48.5, 70], [48, 55], [48, 40], [48.5, 28], [49, 18], [49, 8]], 6, 0);
+    // Dotto linfatico destro (parallelo, leggermente a destra)
+    addPath([[52, 95], [52, 82], [52.5, 65], [52, 50], [51.5, 38], [51, 25], [51, 15], [51, 8]], 5, 0);
+
+    // === RAMI DEL COLLO (struttura verticale) ===
+    // Dotto giugulare interno ed esterno che salgono dritti a formare il collo
+    // Sinistra
+    addPath([[49, 8], [48.5, 3], [48.5, -2], [48, -7]], 4.5, 1);
+    addPath([[47.5, 12], [47, 7], [46.5, 2], [46, -3]], 3.2, 2);
+    addNode(47, 7, 4);
+    addPath([[46, 15], [45, 10], [44, 6], [43, 2]], 2.7, 3);
+    addNode(45, 10, 3.5);
+    // Destra
+    addPath([[51, 8], [51.5, 3], [51.5, -2], [52, -7]], 4.5, 1);
+    addPath([[52.5, 12], [53, 7], [53.5, 2], [54, -3]], 3.2, 2);
+    addNode(53, 7, 4);
+    addPath([[54, 15], [55, 10], [56, 6], [57, 2]], 2.7, 3);
+    addNode(55, 10, 3.5);
+
+    // === RAMI CERVICALI LATERALI (S-curve tipiche) ===
+    // Sinistra — curva a S che sale e poi scende verso la spalla
+    addPath([[48, 15], [44, 13], [40, 14], [36, 16], [32, 15], [28, 13]], 3, 1);
+    addNode(28, 13, 4);
+    addPath([[48, 18], [43, 17], [38, 19], [33, 18], [28, 16]], 2.3, 2);
+    // Destra
+    addPath([[52, 15], [56, 13], [60, 14], [64, 16], [68, 15], [72, 13]], 3, 1);
+    addNode(72, 13, 4);
+    addPath([[52, 18], [57, 17], [62, 19], [67, 18], [72, 16]], 2.3, 2);
+
+    // === RAMI VERSO LE SPALLE — curve ampie e fluide ===
+    // Sinistra
+    addPath([[47, 22], [42, 20], [36, 19], [30, 20], [24, 22], [19, 25]], 3.5, 1);
+    addNode(19, 25, 5);
+    addPath([[46, 25], [40, 24], [34, 25], [28, 27], [22, 28]], 2.7, 2);
+    addNode(22, 28, 3.5);
+    // Destra
+    addPath([[53, 22], [58, 20], [64, 19], [70, 20], [76, 22], [81, 25]], 3.5, 1);
+    addNode(81, 25, 5);
+    addPath([[54, 25], [60, 24], [66, 25], [72, 27], [78, 28]], 2.7, 2);
+    addNode(78, 28, 3.5);
+
+    // === ZONA ASCELLARE — nodo grande con molti rami ===
+    // Sinistra — cluster di linfonodi
+    addNode(17, 30, 5.5);
+    addNode(15, 33, 4);
+    addNode(20, 32, 3.5);
+    addPath([[19, 25], [18, 28], [17, 30], [15, 33], [14, 37]], 3.2, 2);
+    addPath([[17, 30], [20, 32], [22, 35], [21, 38]], 2.3, 3);
+    addPath([[17, 30], [14, 29], [11, 30], [9, 33]], 2.2, 3);
+    addPath([[15, 33], [12, 35], [10, 38], [9, 42]], 1.8, 4);
+    // Ramo verso il braccio sinistro (esteso molto più giù)
+    addPath([[19, 25], [15, 26], [11, 28], [7, 32], [5, 40], [4, 50], [3.5, 60], [3, 70]], 3, 2);
+    addPath([[15, 33], [11, 34], [8, 36], [5, 42], [4.5, 52], [4, 62], [3.5, 72]], 2.3, 3);
+    // Un ramo secondario per il braccio sx
+    addPath([[11, 28], [9, 30], [6.5, 35], [5.5, 45], [5, 55], [4.5, 65]], 1.8, 4);
+
+    // Destra — cluster ascellare
+    addNode(83, 30, 5.5);
+    addNode(85, 33, 4);
+    addNode(80, 32, 3.5);
+    addPath([[81, 25], [82, 28], [83, 30], [85, 33], [86, 37]], 3.2, 2);
+    addPath([[83, 30], [80, 32], [78, 35], [79, 38]], 2.3, 3);
+    addPath([[83, 30], [86, 29], [89, 30], [91, 33]], 2.2, 3);
+    addPath([[85, 33], [88, 35], [90, 38], [91, 42]], 1.8, 4);
+    // Ramo verso il braccio destro (esteso molto più giù)
+    addPath([[81, 25], [85, 26], [89, 28], [93, 32], [95, 40], [96, 50], [96.5, 60], [97, 70]], 3, 2);
+    addPath([[85, 33], [89, 34], [92, 36], [95, 42], [95.5, 52], [96, 62], [96.5, 72]], 2.3, 3);
+    // Un ramo secondario per il braccio dx
+    addPath([[89, 28], [91, 30], [93.5, 35], [94.5, 45], [95, 55], [95.5, 65]], 1.8, 4);
+
+    // === TORACE — rami che si curvano elegantemente dal centro verso i lati ===
+    // Sinistra
+    addPath([[48, 30], [43, 29], [38, 30], [33, 33], [28, 35]], 2.7, 2);
+    addPath([[47, 35], [42, 34], [37, 36], [32, 38]], 2.2, 3);
+    addPath([[47, 40], [42, 39], [37, 41], [33, 44], [30, 42]], 1.8, 3);
+    addPath([[47, 45], [43, 44], [39, 46], [35, 48]], 1.8, 4);
+    // Destra
+    addPath([[52, 30], [57, 29], [62, 30], [67, 33], [72, 35]], 2.7, 2);
+    addPath([[53, 35], [58, 34], [63, 36], [68, 38]], 2.2, 3);
+    addPath([[53, 40], [58, 39], [63, 41], [67, 44], [70, 42]], 1.8, 3);
+    addPath([[53, 45], [57, 44], [61, 46], [65, 48]], 1.8, 4);
+
+    // === ADDOME — rete densa dal centro ===
+    addNode(50, 52, 5); // Cisterna chyli
+    addPath([[48, 50], [44, 49], [40, 50], [36, 53], [33, 56]], 2.3, 3);
+    addPath([[52, 50], [56, 49], [60, 50], [64, 53], [67, 56]], 2.3, 3);
+    addPath([[48, 55], [43, 55], [38, 57], [34, 60]], 1.8, 4);
+    addPath([[52, 55], [57, 55], [62, 57], [66, 60]], 1.8, 4);
+    addPath([[49, 58], [45, 60], [41, 63], [38, 66]], 1.5, 5);
+    addPath([[51, 58], [55, 60], [59, 63], [62, 66]], 1.5, 5);
+
+    // === ZONA INGUINALE ===
+    addNode(42, 72, 5);
+    addNode(58, 72, 5);
+    addPath([[48, 65], [45, 68], [42, 72], [40, 76]], 2.7, 2);
+    addPath([[52, 65], [55, 68], [58, 72], [60, 76]], 2.7, 2);
+    addPath([[42, 72], [38, 74], [35, 77], [33, 80]], 1.8, 3);
+    addPath([[58, 72], [62, 74], [65, 77], [67, 80]], 1.8, 3);
+
+    // === GAMBE ===
+    addPath([[42, 72], [41, 78], [40, 84], [39, 90], [38, 96]], 3.2, 2);
+    addPath([[58, 72], [59, 78], [60, 84], [61, 90], [62, 96]], 3.2, 2);
+    addPath([[40, 84], [37, 86], [34, 89], [32, 93]], 1.8, 4);
+    addPath([[60, 84], [63, 86], [66, 89], [68, 93]], 1.8, 4);
+  }
+
+  // Interpolazione Catmull-Rom per curve lisce e organiche
+  function catmullRom(pts, resolution) {
+    if (pts.length < 2) return pts;
+    const result = [];
+    // Aggiungi punti fantasma all'inizio e alla fine per coprire tutto
+    const extended = [pts[0], ...pts, pts[pts.length - 1]];
+    
+    for (let i = 1; i < extended.length - 2; i++) {
+      const p0 = extended[i - 1];
+      const p1 = extended[i];
+      const p2 = extended[i + 1];
+      const p3 = extended[i + 2];
+      
+      for (let t = 0; t < resolution; t++) {
+        const s = t / resolution;
+        const s2 = s * s;
+        const s3 = s2 * s;
+        
+        const x = 0.5 * (
+          (2 * p1.x) +
+          (-p0.x + p2.x) * s +
+          (2*p0.x - 5*p1.x + 4*p2.x - p3.x) * s2 +
+          (-p0.x + 3*p1.x - 3*p2.x + p3.x) * s3
+        );
+        const y = 0.5 * (
+          (2 * p1.y) +
+          (-p0.y + p2.y) * s +
+          (2*p0.y - 5*p1.y + 4*p2.y - p3.y) * s2 +
+          (-p0.y + 3*p1.y - 3*p2.y + p3.y) * s3
+        );
+        result.push({ x, y });
+      }
+    }
+    result.push(pts[pts.length - 1]);
+    return result;
+  }
+
+  // growBranch non è più usato, tutto è definito manualmente sopra
+
+  function createDrops() {
+    lymphDrops = [];
+    if (branches.length === 0) return;
+    for (let i = 0; i < DROP_COUNT; i++) {
+      lymphDrops.push(spawnDrop());
+    }
+  }
+
+  function spawnDrop() {
+    // Scegli un ramo casuale (preferisci i rami più grandi)
+    const branch = branches[Math.floor(Math.random() * branches.length)];
+    const startIdx = Math.floor(Math.random() * Math.max(1, branch.points.length - 1));
+    return {
+      branchIdx: branches.indexOf(branch),
+      pointIdx: startIdx,
+      subProgress: Math.random(), // progresso tra due punti
+      speed: 0.005 + Math.random() * 0.02,
+      size: 1.5 + Math.random() * 2.2,
+      // Colore: verde menta/smeraldo bioluminescente (sensazione di linfa vitale, ottimo contrasto con il viola)
+      hue: 145 + Math.random() * 30,
+      saturation: 80 + Math.random() * 20,
+      lightness: 35 + Math.random() * 12,
+      alpha: 0.4 + Math.random() * 0.5,
+      trail: [] // Scia
+    };
+  }
+
+  function animateLymph() {
+    const w = lCanvas.width;
+    const h = lCanvas.height;
+    lCtx.clearRect(0, 0, w, h);
+
+    // 1. Disegna i rami (le nervature) con effetto NEON (doppio pass: glow + core luminoso)
+    for (const branch of branches) {
+      if (branch.points.length < 2) continue;
+      const alpha = Math.max(0.18, 0.55 - branch.depth * 0.045);
+      
+      // PASS 1: Neon Glow Esterno (Linea più spessa e sfumata)
+      lCtx.beginPath();
+      lCtx.moveTo(branch.points[0].x, branch.points[0].y);
+      for (let i = 1; i < branch.points.length; i++) {
+        lCtx.lineTo(branch.points[i].x, branch.points[i].y);
+      }
+      lCtx.strokeStyle = `rgba(139, 92, 246, ${alpha * 0.75})`;
+      lCtx.lineWidth = branch.thickness + 2.5;
+      lCtx.lineCap = 'round';
+      lCtx.lineJoin = 'round';
+      lCtx.shadowBlur = 8 + branch.thickness * 4.5;
+      lCtx.shadowColor = `rgba(139, 92, 246, 0.85)`;
+      lCtx.stroke();
+
+      // PASS 2: Neon Core Interno (Filamento sottilissimo quasi bianco)
+      lCtx.beginPath();
+      lCtx.moveTo(branch.points[0].x, branch.points[0].y);
+      for (let i = 1; i < branch.points.length; i++) {
+        lCtx.lineTo(branch.points[i].x, branch.points[i].y);
+      }
+      lCtx.strokeStyle = `rgba(232, 204, 255, ${Math.min(1, alpha + 0.35)})`;
+      lCtx.lineWidth = Math.max(1.0, branch.thickness * 0.5);
+      lCtx.lineCap = 'round';
+      lCtx.lineJoin = 'round';
+      lCtx.shadowBlur = 0; // Disattiva ombra per rendere il nucleo nitido
+      lCtx.stroke();
+    }
+
+    // 1b. Disegna i linfonodi con effetto Neon
+    for (const node of lymphNodes) {
+      // Glow Esterno
+      lCtx.beginPath();
+      lCtx.arc(node.x, node.y, node.size + 1.2, 0, Math.PI * 2);
+      lCtx.fillStyle = `rgba(139, 92, 246, 0.45)`;
+      lCtx.shadowBlur = node.size * 6;
+      lCtx.shadowColor = `rgba(139, 92, 246, 0.9)`;
+      lCtx.fill();
+      
+      // Nucleo Neon Acceso (quasi bianco)
+      lCtx.beginPath();
+      lCtx.arc(node.x, node.y, node.size * 0.45, 0, Math.PI * 2);
+      lCtx.fillStyle = `rgba(243, 232, 255, 0.95)`;
+      lCtx.shadowBlur = 0;
+      lCtx.fill();
+    }
+    lCtx.shadowBlur = 0;
+
+    // 2. Anima le gocce di linfa lungo i rami
+    for (let i = 0; i < lymphDrops.length; i++) {
+      const drop = lymphDrops[i];
+      const branch = branches[drop.branchIdx];
+      if (!branch || branch.points.length < 2) {
+        lymphDrops[i] = spawnDrop();
+        continue;
+      }
+
+      // Avanza lungo il ramo
+      drop.subProgress += drop.speed;
+      if (drop.subProgress >= 1) {
+        drop.subProgress -= 1;
+        drop.pointIdx++;
+        if (drop.pointIdx >= branch.points.length - 1) {
+          // Arrivata alla fine del ramo, respawna
+          lymphDrops[i] = spawnDrop();
+          continue;
+        }
+      }
+
+      // Interpola la posizione tra due punti del ramo
+      const p1 = branch.points[drop.pointIdx];
+      const p2 = branch.points[Math.min(drop.pointIdx + 1, branch.points.length - 1)];
+      const dx = p2.x - p1.x;
+      const dy = p2.y - p1.y;
+      const x = p1.x + dx * drop.subProgress;
+      const y = p1.y + dy * drop.subProgress;
+
+      // Calcola dimensione pulsante per l'effetto lucciola
+      const pulseSpeed = 0.006;
+      const pulsePhase = drop.pointIdx * 1.5 + drop.subProgress * 3;
+      const pulse = 1 + Math.sin(Date.now() * pulseSpeed + pulsePhase) * 0.22;
+      const currentSize = drop.size * pulse;
+
+      // Salva la posizione nella scia
+      drop.trail.push({ x, y });
+      if (drop.trail.length > 6) drop.trail.shift();
+
+      // Disegna la scia (più corta per non appesantire il movimento)
+      for (let t = 0; t < drop.trail.length; t++) {
+        const trailAlpha = (t / drop.trail.length) * drop.alpha * 0.3;
+        const trailSize = currentSize * (t / drop.trail.length) * 0.5;
+        lCtx.beginPath();
+        lCtx.arc(drop.trail[t].x, drop.trail[t].y, trailSize, 0, Math.PI * 2);
+        lCtx.fillStyle = `hsla(${drop.hue}, ${drop.saturation}%, ${drop.lightness}%, ${trailAlpha})`;
+        lCtx.fill();
+      }
+
+      // Disegna il bagliore morbido esterno (Glow del neon)
+      lCtx.beginPath();
+      lCtx.arc(x, y, currentSize * 2.0, 0, Math.PI * 2);
+      lCtx.fillStyle = `hsla(${drop.hue}, 95%, 60%, ${drop.alpha * 0.35})`;
+      lCtx.shadowBlur = 10 + currentSize * 3;
+      lCtx.shadowColor = `hsla(${drop.hue}, 95%, 50%, 0.9)`;
+      lCtx.fill();
+
+      // Disegna il nucleo brillante e nitido (Core - effetto scintilla bianca/verde)
+      lCtx.beginPath();
+      lCtx.arc(x, y, currentSize * 0.7, 0, Math.PI * 2);
+      lCtx.fillStyle = `rgba(255, 255, 255, 0.95)`;
+      lCtx.shadowBlur = 3;
+      lCtx.shadowColor = `hsla(${drop.hue}, 100%, 75%, 0.9)`;
+      lCtx.fill();
+      lCtx.shadowBlur = 0;
+    }
+
+    requestAnimationFrame(animateLymph);
+  }
+
+  resizeLymph();
+  window.addEventListener('resize', resizeLymph);
+  animateLymph();
+
+  // ===================== CAROUSEL SCROLL SYNC & 3D EFFECT =====================
+  function setupCarousel(containerId, progressId, prevArrowClass, nextArrowClass) {
+    const container = document.getElementById(containerId);
+    const progressBar = document.getElementById(progressId);
+
+    if (!container) return;
+
+    function updateProgressBar() {
+      if (!progressBar) return;
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      const scrollPct = maxScroll > 0 ? container.scrollLeft / maxScroll : 0;
+      // La barra occupa il 25% della larghezza, quindi la proprietà left può variare da 0% a 75%
+      progressBar.style.left = (scrollPct * 75) + '%';
+    }
+
+    function update3DEffect() {
+      const containerCenter = container.scrollLeft + container.clientWidth / 2;
+      const cards = container.querySelectorAll('.scroll-card');
+      cards.forEach(card => {
+        const cardCenter = card.offsetLeft + card.clientWidth / 2;
+        const distance = cardCenter - containerCenter;
+        
+        // Calcola l'inclinazione su un intervallo proporzionale alla larghezza della card stessa
+        const maxDistance = card.clientWidth * 1.3;
+        let pct = distance / maxDistance;
+        pct = Math.max(-1, Math.min(1, pct));
+        
+        const rotation = -pct * 20; // Inclinazione massima di 20 gradi
+        const scale = 1 - Math.abs(pct) * 0.12; // Scala da 1.0 a 0.88
+        const opacity = 1 - Math.abs(pct) * 0.25; // Opacità da 1.0 a 0.75
+        
+        card.style.transform = `perspective(1000px) rotateY(${rotation}deg) scale(${scale})`;
+        card.style.opacity = opacity;
+      });
+    }
+
+    let ticking = false;
+    function handleScroll() {
+      updateProgressBar();
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          update3DEffect();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      updateProgressBar();
+      update3DEffect();
+    });
+
+    // Arrow controls
+    const prevArrow = document.querySelector(prevArrowClass);
+    const nextArrow = document.querySelector(nextArrowClass);
+    if (prevArrow && nextArrow) {
+      prevArrow.addEventListener('click', () => {
+        const card = container.querySelector('.scroll-card');
+        if (card) {
+          const scrollAmount = card.clientWidth + 48; // card width + 3rem gap (48px)
+          container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+      });
+      nextArrow.addEventListener('click', () => {
+        const card = container.querySelector('.scroll-card');
+        if (card) {
+          const scrollAmount = card.clientWidth + 48; // card width + 3rem gap (48px)
+          container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+      });
+    }
+
+    // Inizializza subito
+    updateProgressBar();
+    update3DEffect();
+  }
+
+  // Setup both carousels
+  setupCarousel('cards-container', 'slider-progress', '.prev-arrow', '.next-arrow');
+  setupCarousel('projects-slider-container', 'projects-slider-progress', '.projects-prev-arrow', '.projects-next-arrow');
+
+  // ===================== SKILLS ANIMATION TRIGGER =====================
+  const skillFills = document.querySelectorAll('.skill-fill');
+  // Salva e resetta le larghezze originali
+  skillFills.forEach(fill => {
+    const originalWidth = fill.style.width;
+    fill.dataset.width = originalWidth;
+    fill.style.width = '0%';
+  });
+
+  function animateSkills() {
+    skillFills.forEach(fill => {
+      fill.style.width = fill.dataset.width;
+    });
+  }
+
+  function resetSkills() {
+    skillFills.forEach(fill => {
+      fill.style.width = '0%';
+    });
+  }
+
+  // ===================== SIDEBAR SUMMARY MANAGER =====================
+  const logoGs = document.getElementById('logo-gs');
+  const sidebarModal = document.getElementById('sidebar-modal');
+  const sidebarOverlay = document.getElementById('sidebar-overlay');
+  const sidebarClose = document.querySelector('.sidebar-close');
+
+  if (logoGs && sidebarModal && sidebarOverlay) {
+    function openSidebar() {
+      sidebarModal.classList.add('active');
+      sidebarOverlay.classList.add('active');
+      logoGs.classList.add('active');
+      document.body.style.overflow = 'hidden'; // Blocca scroll body
+    }
+
+    function closeSidebar() {
+      sidebarModal.classList.remove('active');
+      sidebarOverlay.classList.remove('active');
+      logoGs.classList.remove('active');
+      // Ripristina lo scroll solo se non ci sono altre modali attive
+      const activeOverlays = document.querySelectorAll('.overlay.active');
+      if (activeOverlays.length === 0) {
+        document.body.style.overflow = '';
+      }
+    }
+
+    logoGs.addEventListener('click', function(e) {
+      e.stopPropagation();
+      if (sidebarModal.classList.contains('active')) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    });
+
+    if (sidebarClose) {
+      sidebarClose.addEventListener('click', closeSidebar);
+    }
+
+    sidebarOverlay.addEventListener('click', closeSidebar);
+
+    // Chiusura al click sui link nav per far scorrere
+    const headerLinks = document.querySelectorAll('nav .nav-links a');
+    headerLinks.forEach(link => {
+      link.addEventListener('click', closeSidebar);
+    });
+
+    // Chiudi anche con tasto Escape
+    window.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeSidebar();
+      }
+    });
+  }
+
+  // ===================== OVERLAYS & MODALS MANAGER =====================
+  const scrollCards = document.querySelectorAll('.scroll-card');
+  const deckCards = document.querySelectorAll('.deck-card');
+  const closeBtns = document.querySelectorAll('.close-btn');
+  const overlays = document.querySelectorAll('.overlay');
+
+  // Apertura degli overlay principali dal carosello
+  scrollCards.forEach(card => {
+    card.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-target');
+      const targetOverlay = document.getElementById(targetId);
+      if (targetOverlay) {
+        targetOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Blocca scroll body
+
+        // Se aperto direttamente dal carosello principale, rimuoviamo temporaneamente data-back-to per non forzare il ritorno al mazzo dei progetti alla chiusura
+        const closeBtn = targetOverlay.querySelector('.close-btn');
+        if (closeBtn && targetId.startsWith('overlay-project')) {
+          closeBtn.removeAttribute('data-back-to');
+        }
+
+        // Se apriamo le competenze o le lingue, avvia l'animazione delle barre
+        if (targetId === 'overlay-skills' || targetId === 'overlay-languages') {
+          setTimeout(animateSkills, 100);
+        }
+      }
+    });
+  });
+
+  // Apertura degli overlay di dettaglio del singolo progetto dal mazzo
+  deckCards.forEach(deckCard => {
+    deckCard.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-project-target');
+      const targetOverlay = document.getElementById(targetId);
+      const deckOverlay = document.getElementById('overlay-projects-deck');
+      if (targetOverlay) {
+        if (deckOverlay) deckOverlay.classList.remove('active');
+        targetOverlay.classList.add('active');
+
+        // Se aperto dal mazzo, ci assicuriamo che torni al mazzo dei progetti alla chiusura
+        const closeBtn = targetOverlay.querySelector('.close-btn');
+        if (closeBtn) {
+          closeBtn.setAttribute('data-back-to', 'overlay-projects-deck');
+        }
+      }
+    });
+  });
+
+  // Gestione pulsanti di chiusura
+  closeBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const currentOverlay = this.closest('.overlay');
+      const backToId = this.getAttribute('data-back-to');
+
+      if (currentOverlay) {
+        currentOverlay.classList.remove('active');
+        
+        // Se chiudiamo le competenze o le lingue, resettiamo le barre
+        if (currentOverlay.id === 'overlay-skills' || currentOverlay.id === 'overlay-languages') {
+          resetSkills();
+        }
+      }
+
+      if (backToId) {
+        const backOverlay = document.getElementById(backToId);
+        if (backOverlay) backOverlay.classList.add('active');
+      } else {
+        // Ripristina lo scroll solo se non ci sono altre modale attive
+        const activeOverlays = document.querySelectorAll('.overlay.active');
+        if (activeOverlays.length === 0) {
+          document.body.style.overflow = '';
+        }
+      }
+    });
+  });
+
+  // Chiusura al click esterno dell'overlay
+  overlays.forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) {
+        this.classList.remove('active');
+        
+        if (this.id === 'overlay-skills' || this.id === 'overlay-languages') {
+          resetSkills();
+        }
+
+        const closeBtn = this.querySelector('.close-btn');
+        const backToId = closeBtn ? closeBtn.getAttribute('data-back-to') : null;
+        
+        if (backToId) {
+          const backOverlay = document.getElementById(backToId);
+          if (backOverlay) backOverlay.classList.add('active');
+        } else {
+          const activeOverlays = document.querySelectorAll('.overlay.active');
+          if (activeOverlays.length === 0) {
+            document.body.style.overflow = '';
+          }
+        }
+      }
+    });
+  });
+
+  // Chiusura con tasto Escape
+  window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      const activeOverlay = document.querySelector('.overlay.active');
+      if (activeOverlay) {
+        activeOverlay.classList.remove('active');
+        
+        if (activeOverlay.id === 'overlay-skills') {
+          resetSkills();
+        }
+
+        const closeBtn = activeOverlay.querySelector('.close-btn');
+        const backToId = closeBtn ? closeBtn.getAttribute('data-back-to') : null;
+
+        if (backToId) {
+          const backOverlay = document.getElementById(backToId);
+          if (backOverlay) backOverlay.classList.add('active');
+        } else {
+          document.body.style.overflow = '';
+        }
+      }
+    }
+  });
+
+  // ===================== NAV LINK INTERACTION =====================
+  const navLinks = document.querySelectorAll('nav .nav-links a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId.startsWith('#') && targetId !== '#') {
+        e.preventDefault();
+        
+        // Chiudi eventuali modali aperte prima di scorrere
+        overlays.forEach(o => o.classList.remove('active'));
+        document.body.style.overflow = '';
+
+        if (targetId === '#contacts') {
+          const contactsSection = document.getElementById('contacts');
+          if (contactsSection) {
+            contactsSection.scrollIntoView({ behavior: 'smooth' });
+          }
+          return;
+        }
+
+        if (targetId === '#projects') {
+          const projectsSection = document.getElementById('projects-slider');
+          if (projectsSection) {
+            projectsSection.scrollIntoView({ behavior: 'smooth' });
+          }
+          return;
+        }
+
+        if (targetId === '#about') {
+          const journeySection = document.getElementById('portfolio-slider');
+          if (journeySection) {
+            journeySection.scrollIntoView({ behavior: 'smooth' });
+          }
+          return;
+        }
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
